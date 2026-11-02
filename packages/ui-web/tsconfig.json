@@ -1,0 +1,5 @@
+{
+  "extends": "@rollover-desk/config/tsconfig.next.json",
+  "compilerOptions": { "noEmit": true },
+  "include": ["src", "test"]
+}

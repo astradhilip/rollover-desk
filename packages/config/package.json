@@ -7,7 +7,9 @@
     "./tsconfig.base.json": "./tsconfig.base.json",
     "./tsconfig.node.json": "./tsconfig.node.json",
     "./tsconfig.next.json": "./tsconfig.next.json",
-    "./eslint": "./eslint.base.js"
+    "./eslint": "./eslint.base.js",
+    "./eslint-tokens": "./eslint.tokens.js",
+    "./stylelint-tokens": "./stylelint.tokens.json"
   },
   "dependencies": {
     "typescript-eslint": "^8.46.0"
@@ -16,6 +18,11 @@
     "eslint": "^9"
   },
   "devDependencies": {
-    "eslint": "^9.39.5"
+    "eslint": "^9.39.5",
+    "stylelint": "^16.25.0",
+    "vitest": "3.2.4"
+  },
+  "scripts": {
+    "test": "vitest run"
   }
 }

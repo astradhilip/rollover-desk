@@ -8,9 +8,9 @@ Update at every milestone, so a fresh session can resume from here.
 | M1 Domain engine       | `feature/m1-domain-engine`            | Merged    |
 | M2 Rent-roll intake    | `feature/m2-rent-roll-intake`         | Merged    |
 | M3a API, auth, tenancy | `feature/m3a-api-auth-tenancy`        | Merged    |
-| M3b API features       | `feature/m3b-api-rollover-features`   | In review |
-| M4a Design system      | `feature/m4a-dashboard-design-system` | Next      |
-| M4b Screens            | `feature/m4b-dashboard-screens`       |           |
+| M3b API features       | `feature/m3b-api-rollover-features`   | Merged    |
+| M4a Design system      | `feature/m4a-dashboard-design-system` | In review |
+| M4b Screens            | `feature/m4b-dashboard-screens`       | Next      |
 | M5 Excel export        | `feature/m5-excel-export`             |           |
 | M6 Submission docs     | `feature/m6-submission-docs`          |           |
 | Cut line               |                                       |           |
@@ -28,12 +28,16 @@ Update at every milestone, so a fresh session can resume from here.
 
 ## Unverified
 
+- Trend lines on KPI tiles are left out: no history exists to plot.
+
 - The Office add-in can't be run in real Excel on this machine (M8).
 
 ## Carried forward
 
 - Tokens carry the role and organization for 8 hours. There is no role change, deactivation or logout yet; when one exists, it must invalidate or re-check tokens.
-- The dashboard's httpOnly cookie needs CSRF protection (`SameSite` and an origin check), because the API is safe from CSRF only through bearer headers. It must also set `TRUST_PROXY_HOPS` and forward the client address, or the login limiter sees one IP.
+- Production must keep the API port private and put a proxy in front of the dashboard that appends the client address, with `TRUSTED_PROXY=1` and `TRUST_PROXY_HOPS=1`. Without it, all clients share one login limit per address.
+- Sign-out clears the cookie but the token stays valid until it expires.
+- The render proof (`pnpm --filter rollover-desk-dashboard proof`) needs a running stack, so it runs locally and not in CI.
 - The login limiter is per process, in memory.
 
 - `Property` holds one market rent per property, not per property type.

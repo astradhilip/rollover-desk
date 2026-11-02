@@ -1,0 +1,11 @@
+{
+  "extends": "@rollover-desk/config/tsconfig.next.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": ["next-env.d.ts", "app", "lib", "components", "test", "middleware.ts", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}

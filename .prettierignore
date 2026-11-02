@@ -6,3 +6,4 @@ pnpm-lock.yaml
 .next
 dist
 data/synthetic/out
+packages/design-tokens/tokens.css

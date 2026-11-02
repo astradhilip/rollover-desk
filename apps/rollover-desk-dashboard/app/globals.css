@@ -1,0 +1,45 @@
+@import 'tailwindcss';
+@import '@rollover-desk/design-tokens/tokens.css';
+@source '../../../packages/ui-web/src';
+
+@layer base {
+  html {
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%;
+    scrollbar-color: var(--faint) transparent;
+  }
+
+  body {
+    font-family: var(--font-geist-sans), system-ui, sans-serif;
+    font-size: var(--text-base);
+    line-height: 1.45;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  input,
+  select,
+  textarea {
+    caret-color: var(--accent);
+  }
+
+  a {
+    text-underline-offset: 0.2em;
+  }
+
+  :focus-visible {
+    outline: var(--focus-width) solid var(--accent);
+    outline-offset: var(--focus-width);
+  }
+
+  button:not(:disabled),
+  summary,
+  select {
+    cursor: pointer;
+  }
+}
