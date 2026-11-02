@@ -1,0 +1,1 @@
+{ "extends": "@rollover-desk/config/tsconfig.node.json", "include": ["src"] }

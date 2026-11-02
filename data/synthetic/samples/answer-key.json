@@ -1,0 +1,334 @@
+{
+  "asOf": "2026-01-15",
+  "property": {
+    "name": "Trinity Commerce Center",
+    "loanMaturityDate": "2028-06-30",
+    "marketRentPsfCents": 3600
+  },
+  "totals": {
+    "occupiedLeases": 16,
+    "vacantSuites": 2,
+    "leasedAreaSf": 88000,
+    "annualRentCents": 275233200,
+    "monthToMonth": 2
+  },
+  "leases": [
+    {
+      "suite": "110",
+      "tenantName": "Bluebonnet Logistics LLC",
+      "status": "occupied",
+      "areaSf": 5600,
+      "annualRentCents": 14179200,
+      "commencementDate": "2020-04-01",
+      "expirationDate": "2033-02-28",
+      "isMonthToMonth": false,
+      "noticeMonths": 12,
+      "rentSteps": []
+    },
+    {
+      "suite": "120",
+      "tenantName": "Cedar Elm Partners",
+      "status": "occupied",
+      "areaSf": 3400,
+      "annualRentCents": 9261600,
+      "commencementDate": "2018-11-01",
+      "expirationDate": "2032-11-30",
+      "isMonthToMonth": false,
+      "noticeMonths": 9,
+      "rentSteps": []
+    },
+    {
+      "suite": "130",
+      "tenantName": "Ferris Wheel Studios Inc.",
+      "status": "occupied",
+      "areaSf": 8600,
+      "annualRentCents": 24148800,
+      "commencementDate": "2022-12-01",
+      "expirationDate": "2030-05-31",
+      "isMonthToMonth": false,
+      "noticeMonths": 9,
+      "rentSteps": [
+        {
+          "date": "2026-07-01",
+          "annualRentCents": 24873264
+        }
+      ]
+    },
+    {
+      "suite": "140",
+      "tenantName": "Greenville Avenue Dental",
+      "status": "occupied",
+      "areaSf": 7600,
+      "annualRentCents": 23985600,
+      "commencementDate": "2021-06-01",
+      "expirationDate": "2030-08-31",
+      "isMonthToMonth": false,
+      "noticeMonths": null,
+      "rentSteps": []
+    },
+    {
+      "suite": "150",
+      "tenantName": "Harwood Data Systems",
+      "status": "occupied",
+      "areaSf": 1800,
+      "annualRentCents": 5464800,
+      "commencementDate": "2019-10-01",
+      "expirationDate": "2028-01-31",
+      "isMonthToMonth": false,
+      "noticeMonths": 6,
+      "rentSteps": []
+    },
+    {
+      "suite": "160",
+      "tenantName": "Katy Trail Advisors",
+      "status": "occupied",
+      "areaSf": 1800,
+      "annualRentCents": 5076000,
+      "commencementDate": "2023-02-01",
+      "expirationDate": null,
+      "isMonthToMonth": true,
+      "noticeMonths": null,
+      "rentSteps": []
+    },
+    {
+      "suite": "210",
+      "tenantName": "Lakewood Title Co.",
+      "status": "occupied",
+      "areaSf": 3200,
+      "annualRentCents": 8678400,
+      "commencementDate": "2023-11-01",
+      "expirationDate": "2031-12-31",
+      "isMonthToMonth": false,
+      "noticeMonths": 12,
+      "rentSteps": []
+    },
+    {
+      "suite": "220",
+      "tenantName": "Bluebonnet Logistics LLC",
+      "status": "occupied",
+      "areaSf": 4600,
+      "annualRentCents": 16891200,
+      "commencementDate": "2018-12-01",
+      "expirationDate": "2033-10-31",
+      "isMonthToMonth": false,
+      "noticeMonths": 9,
+      "rentSteps": []
+    },
+    {
+      "suite": "230",
+      "tenantName": "Northpark Staffing Group",
+      "status": "occupied",
+      "areaSf": 3600,
+      "annualRentCents": 14472000,
+      "commencementDate": "2017-09-01",
+      "expirationDate": "2028-06-30",
+      "isMonthToMonth": false,
+      "noticeMonths": 9,
+      "rentSteps": [
+        {
+          "date": "2026-07-01",
+          "annualRentCents": 14906160
+        }
+      ]
+    },
+    {
+      "suite": "240",
+      "tenantName": "Oak Lawn Architects",
+      "status": "occupied",
+      "areaSf": 3900,
+      "annualRentCents": 15631200,
+      "commencementDate": "2019-02-01",
+      "expirationDate": "2031-08-31",
+      "isMonthToMonth": false,
+      "noticeMonths": null,
+      "rentSteps": []
+    },
+    {
+      "suite": "250",
+      "tenantName": "Pecan Valley Foods",
+      "status": "occupied",
+      "areaSf": 6700,
+      "annualRentCents": 24280800,
+      "commencementDate": "2019-11-01",
+      "expirationDate": "2032-08-31",
+      "isMonthToMonth": false,
+      "noticeMonths": 12,
+      "rentSteps": []
+    },
+    {
+      "suite": "260",
+      "tenantName": null,
+      "status": "vacant",
+      "areaSf": 2900,
+      "annualRentCents": null,
+      "commencementDate": null,
+      "expirationDate": null,
+      "isMonthToMonth": false,
+      "noticeMonths": null,
+      "rentSteps": []
+    },
+    {
+      "suite": "310",
+      "tenantName": "Riverfront Engineering",
+      "status": "occupied",
+      "areaSf": 8100,
+      "annualRentCents": 22939200,
+      "commencementDate": "2018-12-01",
+      "expirationDate": "2033-11-30",
+      "isMonthToMonth": false,
+      "noticeMonths": 6,
+      "rentSteps": []
+    },
+    {
+      "suite": "320",
+      "tenantName": "Stemmons Freight Inc.",
+      "status": "occupied",
+      "areaSf": 6500,
+      "annualRentCents": 15912000,
+      "commencementDate": "2022-12-01",
+      "expirationDate": "2032-12-31",
+      "isMonthToMonth": false,
+      "noticeMonths": 9,
+      "rentSteps": []
+    },
+    {
+      "suite": "330",
+      "tenantName": "Turtle Creek Capital",
+      "status": "occupied",
+      "areaSf": 8100,
+      "annualRentCents": 32756400,
+      "commencementDate": "2023-12-01",
+      "expirationDate": "2027-03-31",
+      "isMonthToMonth": false,
+      "noticeMonths": 9,
+      "rentSteps": [
+        {
+          "date": "2026-07-01",
+          "annualRentCents": 33739092
+        }
+      ]
+    },
+    {
+      "suite": "340",
+      "tenantName": "Uptown Legal Services",
+      "status": "occupied",
+      "areaSf": 6500,
+      "annualRentCents": 19188000,
+      "commencementDate": "2017-08-01",
+      "expirationDate": "2029-02-28",
+      "isMonthToMonth": false,
+      "noticeMonths": null,
+      "rentSteps": []
+    },
+    {
+      "suite": "350",
+      "tenantName": "White Rock Insurance",
+      "status": "occupied",
+      "areaSf": 8000,
+      "annualRentCents": 22368000,
+      "commencementDate": "2020-09-01",
+      "expirationDate": null,
+      "isMonthToMonth": true,
+      "noticeMonths": null,
+      "rentSteps": []
+    },
+    {
+      "suite": "360",
+      "tenantName": null,
+      "status": "vacant",
+      "areaSf": 8800,
+      "annualRentCents": null,
+      "commencementDate": null,
+      "expirationDate": null,
+      "isMonthToMonth": false,
+      "noticeMonths": null,
+      "rentSteps": []
+    }
+  ],
+  "defects": {
+    "clean.xlsx": [],
+    "property-manager-export.xlsx": [
+      {
+        "suite": "120",
+        "code": "missing_value",
+        "expected": {
+          "annualRentCents": null
+        }
+      },
+      {
+        "suite": "130",
+        "code": "invalid_date",
+        "expected": {
+          "expirationDate": null
+        }
+      },
+      {
+        "suite": "210",
+        "code": "duplicate_suite"
+      }
+    ],
+    "broker-stacking-plan.xlsx": [
+      {
+        "suite": "140",
+        "code": "date_order",
+        "expected": {
+          "commencementDate": "2031-01-01",
+          "expirationDate": "2030-12-31"
+        }
+      },
+      {
+        "suite": "230",
+        "code": "invalid_number",
+        "expected": {
+          "areaSf": null,
+          "annualRentCents": null
+        }
+      },
+      {
+        "suite": "310",
+        "code": "unusual_date_format",
+        "expected": {
+          "expirationDate": "2032-02-13"
+        }
+      },
+      {
+        "suite": null,
+        "code": "unattached_row"
+      },
+      {
+        "suite": null,
+        "code": "total_mismatch"
+      }
+    ],
+    "accounting-extract.csv": [
+      {
+        "suite": "150",
+        "code": "invalid_number",
+        "expected": {
+          "annualRentCents": null
+        }
+      },
+      {
+        "suite": "240",
+        "code": "rent_out_of_range",
+        "expected": {
+          "annualRentCents": 1200
+        }
+      },
+      {
+        "suite": "320",
+        "code": "ambiguous_date",
+        "expected": {
+          "expirationDate": null
+        }
+      },
+      {
+        "suite": "330",
+        "code": "unparsed_notice",
+        "expected": {
+          "noticeMonths": null
+        }
+      }
+    ]
+  }
+}

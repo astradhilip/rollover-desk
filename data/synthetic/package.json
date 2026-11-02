@@ -1,0 +1,22 @@
+{
+  "name": "@rollover-desk/synthetic",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "generate": "tsx src/cli.ts",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "exceljs": "4.4.0"
+  },
+  "devDependencies": {
+    "@rollover-desk/config": "workspace:*",
+    "@types/node": "22.18.12",
+    "tsx": "4.20.6",
+    "typescript": "5.9.3"
+  }
+}
