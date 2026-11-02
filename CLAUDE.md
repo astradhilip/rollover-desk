@@ -26,7 +26,7 @@ packages/config               tsconfig and ESLint bases
 data/synthetic                seeded generator and sample rent rolls
 ```
 
-API layers: `src/domain/{entities,ports}` → `src/application/use-cases` → `src/interfaces/http` and `src/infrastructure`. Only `src/server.ts` wires concrete adapters. `domain` imports nothing outside itself; `application` imports only `domain`.
+API layers: `src/domain/{entities,ports}` → `src/application/use-cases` → `src/interfaces/http` and `src/infrastructure`. Only `src/server.ts` and its `src/wiring.ts` wire concrete adapters. `domain` imports nothing outside itself; `application` imports only `domain`.
 
 ## Domain rules
 

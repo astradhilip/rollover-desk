@@ -1,8 +1,10 @@
 import cors from 'cors';
 import express, { type NextFunction, type Request, type Response } from 'express';
 import helmet from 'helmet';
+import multer from 'multer';
 import type { Logger } from 'pino';
 import swaggerUi from 'swagger-ui-express';
+import type { z } from 'zod';
 import type { Principal } from '../../domain/entities/User';
 import type { ITokenService } from '../../domain/ports/ITokenService';
 import { HttpError, toHttpError } from './errors';
@@ -50,8 +52,10 @@ export function createApp({ routes, tokens, logger, corsOrigins, trustProxyHops 
   for (const route of routes) {
     app[route.method](route.path, async (req: Request, res: Response) => {
       const principal = await authorize(route, req, tokens);
+      const file = route.upload ? await receiveFile(req, res) : undefined;
       const body = parseBody(route, req);
-      const result = await route.handle({ req, res, principal, body });
+      const query = route.query ? validate(route.query, req.query) : undefined;
+      const result = await route.handle({ req, res, principal, body, query, ...(file ? { file } : {}) });
       res.status(route.status ?? 200).json(route.response.parse(result));
     });
   }
@@ -72,6 +76,31 @@ export function createApp({ routes, tokens, logger, corsOrigins, trustProxyHops 
   return app;
 }
 
+const UPLOAD_LIMIT_BYTES = 10 * 1024 * 1024;
+const receiver = multer({
+  storage: multer.memoryStorage(),
+  defParamCharset: 'utf8',
+  limits: { fileSize: UPLOAD_LIMIT_BYTES, files: 1, fields: 0 },
+}).single('file');
+
+function receiveFile(req: Request, res: Response) {
+  return new Promise<{ originalname: string; buffer: Buffer } | undefined>((resolve, reject) => {
+    receiver(req, res, (error: unknown) => {
+      if (error instanceof multer.MulterError) {
+        const message =
+          error.code === 'LIMIT_FILE_SIZE'
+            ? 'The file is over the 10 MB limit.'
+            : 'The upload could not be read.';
+        reject(new HttpError(400, 'validation_error', message));
+      } else if (error) {
+        reject(new HttpError(400, 'validation_error', 'The upload could not be read.'));
+      } else {
+        resolve(req.file);
+      }
+    });
+  });
+}
+
 async function authorize(route: Route, req: Request, tokens: ITokenService): Promise<Principal> {
   // A public route never reads this; the value makes that mistake fail closed in a repository query.
   if (route.access === 'public') return { userId: '', organizationId: '', role: 'viewer' };
@@ -85,8 +114,11 @@ async function authorize(route: Route, req: Request, tokens: ITokenService): Pro
 }
 
 function parseBody(route: Route, req: Request): unknown {
-  if (!route.request) return undefined;
-  const parsed = route.request.safeParse(req.body);
+  return route.request ? validate(route.request, req.body) : undefined;
+}
+
+function validate(schema: z.ZodType, value: unknown): unknown {
+  const parsed = schema.safeParse(value);
   if (parsed.success) return parsed.data;
   throw new HttpError(
     400,

@@ -12,11 +12,32 @@ export function buildOpenApi(routes: Route[]) {
       required: true,
       schema: { type: 'string' },
     }));
+    const querySchema = route.query
+      ? (z.toJSONSchema(route.query, { io: 'input' }) as { properties?: object; required?: string[] })
+      : null;
+    const queryParams = Object.entries(querySchema?.properties ?? {}).map(([name, schema]) => ({
+      name,
+      in: 'query',
+      required: querySchema?.required?.includes(name) ?? false,
+      schema,
+    }));
     (paths[path] ??= {})[route.method] = {
       summary: route.summary,
       'x-access': route.access,
       ...(route.access === 'public' ? {} : { security: [{ bearer: [] }] }),
-      ...(params.length ? { parameters: params } : {}),
+      ...(params.length + queryParams.length ? { parameters: [...params, ...queryParams] } : {}),
+      ...(route.upload
+        ? {
+            requestBody: {
+              required: true,
+              content: {
+                'multipart/form-data': {
+                  schema: { type: 'object', properties: { file: { type: 'string', format: 'binary' } } },
+                },
+              },
+            },
+          }
+        : {}),
       ...(route.request
         ? {
             requestBody: {
