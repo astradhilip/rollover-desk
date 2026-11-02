@@ -69,6 +69,14 @@ describe('attentionQueue', () => {
   });
 });
 
+describe('attention wording', () => {
+  it('says a near expiry once: as no activity until someone acts, then as the expiry', () => {
+    const l = lease({ expirationDate: '2026-03-01', noticeMonths: null });
+    expect(kinds([l])).toEqual(['no_renewal_activity']);
+    expect(kinds([l], new Map([[l.id, 'contacted']]))).toEqual(['expires_soon']);
+  });
+});
+
 describe('attention keys', () => {
   const key = (
     l: Parameters<typeof attentionQueue>[0][number],

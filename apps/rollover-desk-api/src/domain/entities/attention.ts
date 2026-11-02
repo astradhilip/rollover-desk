@@ -107,7 +107,8 @@ export function attentionQueue(
         const entry = dates.upcoming.find((d) => d.kind === 'notice')!;
         add('notice_soon', 'high', describeCriticalDate(entry), notice!, toNotice);
       }
-      if (toExpiry <= EXPIRES_SOON_DAYS) {
+      // Unmoved and within the no-activity window, the row below already says it expires.
+      if (toExpiry <= EXPIRES_SOON_DAYS && (moved || toExpiry > NO_ACTIVITY_DAYS)) {
         const entry = dates.upcoming.find((d) => d.kind === 'expiration')!;
         add('expires_soon', 'medium', describeCriticalDate(entry), lease.expirationDate!, toExpiry);
       }

@@ -51,6 +51,9 @@ describe('session rules', () => {
   });
   it('keeps the login route out of the proxy', () => {
     expect(isBlockedPath('/auth/login')).toBe(true);
+    // Express matches routes case-insensitively.
+    expect(isBlockedPath('/AUTH/Login')).toBe(true);
+    expect(isBlockedPath('/auth/login/')).toBe(true);
     expect(isBlockedPath('/auth/me')).toBe(false);
   });
 });

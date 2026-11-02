@@ -27,6 +27,10 @@ export function years(value: number | null | undefined): string {
   return `${value.toFixed(1)} yrs`;
 }
 
+export const rowCount = (n: number) => `${n} ${n === 1 ? 'row' : 'rows'}`;
+
+export const leaseCount = (n: number) => `${n} ${n === 1 ? 'lease' : 'leases'}`;
+
 export function percent(share: number | null | undefined): string {
   if (share === null || share === undefined) return NOT_RECORDED;
   return `${(share * 100).toFixed(1)}%`;

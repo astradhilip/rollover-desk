@@ -1,16 +1,20 @@
-import { AlertTriangle, Inbox } from 'lucide-react';
+'use client';
+
+import { AlertTriangle, ChevronRight, Inbox } from 'lucide-react';
 import {
   type ButtonHTMLAttributes,
   type InputHTMLAttributes,
   type ReactNode,
   type SelectHTMLAttributes,
   useId,
+  useState,
 } from 'react';
 
 const cx = (...parts: (string | false | null | undefined)[]) => parts.filter(Boolean).join(' ');
 
 const BUTTON = {
-  primary: 'bg-accent text-accent-ink hover:opacity-90',
+  primary:
+    'bg-accent text-accent-ink hover:opacity-90 disabled:bg-sunken disabled:text-muted disabled:opacity-100',
   secondary: 'bg-surface text-ink border border-line hover:bg-sunken',
   ghost: 'text-muted hover:bg-sunken hover:text-ink',
   danger: 'bg-surface text-bad border border-line hover:bg-bad-soft',
@@ -171,7 +175,7 @@ export function PageHead({ title, note, actions }: { title: string; note?: React
 export function KpiTile({ label, value, detail }: { label: string; value: string; detail?: string }) {
   return (
     <div className="flex min-w-0 flex-col gap-1.5 rounded-lg border border-line bg-surface px-4 py-3.5 shadow-tile">
-      <div className="truncate text-sm text-muted">{label}</div>
+      <div className="text-sm text-muted">{label}</div>
       <div className="text-kpi leading-none font-semibold tracking-tight text-ink tabular-nums">{value}</div>
       {detail ? <div className="text-xs text-muted">{detail}</div> : null}
     </div>
@@ -262,7 +266,98 @@ export const Td = ({ children, numeric }: { children?: ReactNode; numeric?: bool
   </td>
 );
 
-export type SurveyMarkState = 'passed' | 'soon' | 'upcoming';
+/** Inline two-step confirm, for an action that replaces data. Cancel stays one click away. */
+export function ConfirmButton({
+  label,
+  question,
+  confirmLabel,
+  onConfirm,
+  disabled,
+}: {
+  label: string;
+  question: string;
+  confirmLabel: string;
+  onConfirm: () => void;
+  disabled?: boolean;
+}) {
+  const [asking, setAsking] = useState(false);
+  if (!asking) {
+    return (
+      <Button disabled={disabled} onClick={() => setAsking(true)}>
+        {label}
+      </Button>
+    );
+  }
+  return (
+    <span className="inline-flex flex-wrap items-center gap-2">
+      <span className="text-sm text-ink">{question}</span>
+      <Button
+        variant="danger"
+        onClick={() => {
+          setAsking(false);
+          onConfirm();
+        }}
+      >
+        {confirmLabel}
+      </Button>
+      <Button variant="ghost" onClick={() => setAsking(false)}>
+        Cancel
+      </Button>
+    </span>
+  );
+}
+
+export function Segmented<T extends string>({
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  label: string;
+  value: T;
+  options: { value: T; label: string }[];
+  onChange: (value: T) => void;
+}) {
+  return (
+    <div
+      role="group"
+      aria-label={label}
+      className="inline-flex rounded-md border border-line bg-sunken p-0.5"
+    >
+      {options.map((o) => (
+        <button
+          key={o.value}
+          type="button"
+          aria-pressed={o.value === value}
+          onClick={() => onChange(o.value)}
+          className={cx(
+            'min-h-10 rounded-sm px-2.5 text-sm lg:min-h-7',
+            o.value === value ? 'bg-surface font-medium text-ink shadow-tile' : 'text-muted hover:text-ink',
+          )}
+        >
+          {o.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+export function Disclosure({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <details className="group">
+      <summary className="flex min-h-9 list-none items-center gap-1 text-sm text-muted hover:text-ink [&::-webkit-details-marker]:hidden">
+        <ChevronRight
+          aria-hidden
+          className="size-3.5 transition-transform group-open:rotate-90 motion-reduce:transition-none"
+        />
+        {label}
+      </summary>
+      {children}
+    </details>
+  );
+}
+
+export type SurveyMarkState = 'start' | 'passed' | 'soon' | 'upcoming';
 export interface SurveyMark {
   date: string;
   label: string;
@@ -278,14 +373,24 @@ export function surveyPosition(date: string, from: string, to: string): number {
   return Math.min(100, Math.max(0, ((dayNumber(date) - dayNumber(from)) / span) * 100));
 }
 
-const MARK = { passed: 'bg-bad', soon: 'bg-warn', upcoming: 'bg-accent' } as const;
-const WORD = { passed: 'Passed', soon: 'Soon', upcoming: 'Upcoming' } as const;
+const MARK = { start: 'bg-muted', passed: 'bg-bad', soon: 'bg-warn', upcoming: 'bg-accent' } as const;
+const WORD = { start: 'Started', passed: 'Passed', soon: 'Soon', upcoming: 'Upcoming' } as const;
 
 /**
  * The surveyed date line: a lease's dates measured out to scale like a dimension line on a drawing.
  * State is carried by the word as well as the colour.
  */
-export function SurveyLine({ asOf, marks }: { asOf: string; marks: SurveyMark[] }) {
+export function SurveyLine({
+  asOf,
+  marks,
+  list = true,
+  caption,
+}: {
+  asOf: string;
+  marks: SurveyMark[];
+  list?: boolean;
+  caption?: string;
+}) {
   const sorted = [...marks].sort((a, b) => a.date.localeCompare(b.date));
   const dates = [asOf, ...sorted.map((m) => m.date)].sort();
   const from = dates[0]!;
@@ -323,16 +428,18 @@ export function SurveyLine({ asOf, marks }: { asOf: string; marks: SurveyMark[] 
           />
         ))}
       </div>
-      <ol className="m-0 flex list-none flex-col gap-1 p-0">
-        {sorted.map((m) => (
-          <li key={`${m.date}${m.label}`} className="flex flex-wrap items-baseline gap-x-3 text-base">
-            <span className="font-medium text-ink tabular-nums">{m.date}</span>
-            <span className="text-ink">{m.label}</span>
-            <span className="text-xs text-muted">{WORD[m.state]}</span>
-          </li>
-        ))}
-      </ol>
-      <figcaption className="text-xs text-muted">Heavy tick marks today, {asOf}.</figcaption>
+      {list ? (
+        <ol className="m-0 flex list-none flex-col gap-1 p-0">
+          {sorted.map((m) => (
+            <li key={`${m.date}${m.label}`} className="flex flex-wrap items-baseline gap-x-3 text-base">
+              <span className="font-medium text-ink tabular-nums">{m.date}</span>
+              <span className="text-ink">{m.label}</span>
+              <span className="text-xs text-muted">{WORD[m.state]}</span>
+            </li>
+          ))}
+        </ol>
+      ) : null}
+      <figcaption className="text-xs text-muted">{caption ?? `Heavy tick marks today, ${asOf}.`}</figcaption>
     </figure>
   );
 }

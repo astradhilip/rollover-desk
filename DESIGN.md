@@ -58,3 +58,9 @@ From `packages/ui-web`: `Button`, `TextField`, `SelectField`, `Badge`, `Panel`, 
 - A missing value reads "Not recorded", never zero.
 - No eyebrows, gradient text, colored side borders or decorative sparklines.
 - Motion only answers an action. Skeletons stop under reduced motion.
+
+## Doubt stays in place
+
+Flagged rows carry their badge and sort first. Long lists run full length rather than scrolling inside a panel, so nothing looks complete when it isn't. On Critical dates the surveyed line spans every lease expiration in the property, with the month grid as its list.
+
+Components added for the screens: `ConfirmButton`, `Segmented`, `Disclosure`.

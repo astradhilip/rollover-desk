@@ -157,6 +157,9 @@ importers:
       '@rollover-desk/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@rollover-desk/synthetic':
+        specifier: workspace:*
+        version: link:../../data/synthetic
       '@tailwindcss/postcss':
         specifier: ^4.1.14
         version: 4.3.3

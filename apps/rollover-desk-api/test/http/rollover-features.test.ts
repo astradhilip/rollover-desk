@@ -369,6 +369,34 @@ describe('review regressions', () => {
       .set('Content-Type', 'multipart/form-data; boundary=b')
       .send(`--b\r\nContent-Disposition: form-data; name="file"; ${disposition}\r\n\r\n${GOOD}\r\n--b--\r\n`);
 
+  it('counts missing rent and area in rollover buckets and projected vacating', async () => {
+    const { body } = await csvUpload(
+      'Suite,Tenant,SF,Annual Rent,Expiration,Notice\n100,Acme,,,1/1/2030,12\n200,Beta,1000,5000,1/1/2030,12\n',
+    );
+    await confirm(body.import.id).expect(200);
+    const moves = { moves: [{ suite: '100', stage: 'vacating', vacatingReason: 'Moving' }] };
+    await request(ctx.app)
+      .post(`/properties/${pid}/renewals/moves`)
+      .set(auth[ANALYST.email]!)
+      .send(moves)
+      .expect(200);
+    const roll = (await get('/rollover').expect(200)).body;
+    const y2030 = roll.schedule.years.find((y: { year: number }) => y.year === 2030);
+    expect(y2030).toMatchObject({
+      leases: 2,
+      leasesMissingRent: 1,
+      leasesMissingArea: 1,
+      annualRentCents: 500_000,
+    });
+    expect(roll.projectedVacating).toEqual({
+      leases: 1,
+      areaSf: 0,
+      annualRentCents: 0,
+      leasesMissingArea: 1,
+      leasesMissingRent: 1,
+    });
+  });
+
   it('stores a non-ASCII filename correctly', async () => {
     const res = await csvUpload(GOOD, 'Théâtre.csv').expect(201);
     expect(res.body.import.filename).toBe('Théâtre.csv');

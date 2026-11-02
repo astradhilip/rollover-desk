@@ -2,7 +2,19 @@
 
 import { Button } from '@rollover-desk/ui-web';
 import { useQuery } from '@tanstack/react-query';
-import { Building2, LayoutGrid, LogOut, Menu, Settings, X } from 'lucide-react';
+import {
+  Building2,
+  CalendarDays,
+  Columns3,
+  FileSpreadsheet,
+  LayoutGrid,
+  LogOut,
+  Menu,
+  Scale,
+  Settings,
+  Table2,
+  X,
+} from 'lucide-react';
 import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
 import { type ReactNode, useEffect, useState } from 'react';
@@ -28,7 +40,16 @@ export function Shell({ children }: { children: ReactNode }) {
 
   const links = [
     { href: '/', label: 'Properties', icon: Building2 },
-    ...(id ? [{ href: `/p/${id}`, label: 'Desk', icon: LayoutGrid }] : []),
+    ...(id
+      ? [
+          { href: `/p/${id}`, label: 'Desk', icon: LayoutGrid },
+          { href: `/p/${id}/leases`, label: 'Leases', icon: Table2 },
+          { href: `/p/${id}/pipeline`, label: 'Renewal pipeline', icon: Columns3 },
+          { href: `/p/${id}/dates`, label: 'Critical dates', icon: CalendarDays },
+          { href: `/p/${id}/rent-rolls`, label: 'Rent rolls', icon: FileSpreadsheet },
+          { href: `/p/${id}/weights`, label: 'Risk weights', icon: Scale },
+        ]
+      : []),
     { href: '/account', label: 'Account', icon: Settings },
   ];
 
@@ -54,7 +75,8 @@ export function Shell({ children }: { children: ReactNode }) {
         <div className="hidden px-2 pt-1 text-lg font-semibold text-side-ink lg:block">Rollover Desk</div>
         <nav aria-label="Main" className="flex flex-col gap-0.5">
           {links.map(({ href, label, icon: Icon }) => {
-            const active = pathname === href;
+            const active =
+              href === pathname || (href.split('/').length > 3 && pathname.startsWith(`${href}/`));
             return (
               <Link
                 key={href}
