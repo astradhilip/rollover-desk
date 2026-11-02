@@ -6,17 +6,41 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "dev": "tsx watch --env-file-if-exists=.env src/server.ts",
+    "build": "tsup",
+    "start": "node --env-file-if-exists=.env dist/server.js",
+    "seed": "tsx --env-file-if-exists=.env src/infrastructure/db/seed.ts"
   },
   "devDependencies": {
     "@rollover-desk/config": "workspace:*",
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
     "@types/node": "22.18.12",
+    "@types/pg": "^8.23.1",
+    "@types/supertest": "^7.2.1",
+    "@types/swagger-ui-express": "^4.1.8",
     "eslint": "^9.39.5",
+    "supertest": "^7.3.1",
+    "tsup": "^8.5.1",
+    "tsx": "4.20.6",
     "typescript": "5.9.3",
-    "vitest": "3.2.4",
-    "@rollover-desk/synthetic": "workspace:*"
+    "vitest": "3.2.4"
   },
   "dependencies": {
-    "exceljs": "4.4.0"
+    "better-sqlite3": "^13.0.3",
+    "cors": "^2.8.6",
+    "exceljs": "4.4.0",
+    "express": "^5.3.0",
+    "helmet": "^8.3.0",
+    "jose": "^6.2.15",
+    "kysely": "^0.29.8",
+    "pg": "^8.23.1",
+    "pino": "^10.4.0",
+    "swagger-ui-express": "^5.0.1",
+    "zod": "^4.6.7",
+    "@rollover-desk/contracts": "workspace:*",
+    "@rollover-desk/synthetic": "workspace:*"
   }
 }
