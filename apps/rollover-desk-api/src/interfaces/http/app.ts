@@ -6,7 +6,6 @@ import type { Logger } from 'pino';
 import swaggerUi from 'swagger-ui-express';
 import type { z } from 'zod';
 import type { Principal } from '../../domain/entities/User';
-import type { ITokenService } from '../../domain/ports/ITokenService';
 import { HttpError, toHttpError } from './errors';
 import { buildOpenApi } from './openapi';
 import type { Route } from './routes';
@@ -16,7 +15,8 @@ const XLSX = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 
 export interface AppOptions {
   routes: Route[];
-  tokens: ITokenService;
+  /** Who a bearer token belongs to now, or null. */
+  authenticate: (token: string) => Promise<Principal | null>;
   logger: Logger;
   corsOrigins: string[];
   /** Proxies in front of this API, so the login limiter sees the real client address. */
@@ -25,7 +25,7 @@ export interface AppOptions {
 
 const bearer = (req: Request) => /^Bearer (\S+)$/.exec(req.headers.authorization ?? '')?.[1] ?? null;
 
-export function createApp({ routes, tokens, logger, corsOrigins, trustProxyHops = 0 }: AppOptions) {
+export function createApp({ routes, authenticate, logger, corsOrigins, trustProxyHops = 0 }: AppOptions) {
   const app = express();
   app.set('trust proxy', trustProxyHops);
   app.disable('x-powered-by');
@@ -52,7 +52,7 @@ export function createApp({ routes, tokens, logger, corsOrigins, trustProxyHops 
 
   for (const route of routes) {
     app[route.method](route.path, async (req: Request, res: Response) => {
-      const principal = await authorize(route, req, tokens);
+      const principal = await authorize(route, req, authenticate);
       const file = route.upload ? await receiveFile(req, res) : undefined;
       const body = parseBody(route, req);
       const query = route.query ? validate(route.query, req.query) : undefined;
@@ -110,11 +110,15 @@ function receiveFile(req: Request, res: Response) {
   });
 }
 
-async function authorize(route: Route, req: Request, tokens: ITokenService): Promise<Principal> {
+async function authorize(
+  route: Route,
+  req: Request,
+  authenticate: AppOptions['authenticate'],
+): Promise<Principal> {
   // A public route never reads this; the value makes that mistake fail closed in a repository query.
   if (route.access === 'public') return { userId: '', organizationId: '', role: 'viewer' };
   const token = bearer(req);
-  const principal = token ? await tokens.verify(token) : null;
+  const principal = token ? await authenticate(token) : null;
   if (!principal) throw new HttpError(401, 'unauthorized', 'Sign in to continue.');
   if (route.access === 'analyst' && principal.role !== 'analyst') {
     throw new HttpError(403, 'forbidden', 'Your role can view but not change this.');

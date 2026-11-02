@@ -1,7 +1,12 @@
 import type { Kysely, Selectable } from 'kysely';
 import { randomUUID } from 'node:crypto';
 import type { ParsedLease } from '../../domain/entities/rentRollIntake';
-import type { IRentRollRepository, NewImport, RentRollImport } from '../../domain/ports/IRentRollRepository';
+import type {
+  ConfirmedFindings,
+  IRentRollRepository,
+  NewImport,
+  RentRollImport,
+} from '../../domain/ports/IRentRollRepository';
 import type { Database } from './schema';
 
 type ImportRow = Selectable<Database['rent_roll_imports']>;
@@ -97,9 +102,10 @@ export class RentRollRepository implements IRentRollRepository {
     propertyId: string,
     id: string,
     leases: ParsedLease[],
+    findings: ConfirmedFindings,
   ): Promise<boolean> {
     try {
-      return await this.confirmInTransaction(organizationId, propertyId, id, leases);
+      return await this.confirmInTransaction(organizationId, propertyId, id, leases, findings);
     } catch (error) {
       // Another confirm won the race for this property; its rent roll stands.
       if (isUniqueViolation(error)) return false;
@@ -112,6 +118,7 @@ export class RentRollRepository implements IRentRollRepository {
     propertyId: string,
     id: string,
     leases: ParsedLease[],
+    findings: ConfirmedFindings,
   ) {
     return this.db.transaction().execute(async (trx) => {
       const scope = () =>
@@ -136,7 +143,11 @@ export class RentRollRepository implements IRentRollRepository {
       // Retire the current one first: the unique index allows only one confirmed at any moment.
       await scope().set({ status: 'replaced' }).where('status', '=', 'confirmed').execute();
       const claimed = await scope()
-        .set({ status: 'confirmed', confirmed_seq: Number(last?.seq ?? 0) + 1 })
+        .set({
+          status: 'confirmed',
+          confirmed_seq: Number(last?.seq ?? 0) + 1,
+          confirmed_issues_json: JSON.stringify(findings),
+        })
         .where('id', '=', id)
         .where('status', '=', 'pending')
         .executeTakeFirst();
@@ -199,6 +210,21 @@ export class RentRollRepository implements IRentRollRepository {
     return this.leasesWhere(organizationId, propertyId, { status: 'confirmed' });
   }
 
+  async confirmedFindings(
+    organizationId: string,
+    propertyId: string,
+    id: string,
+  ): Promise<ConfirmedFindings | null> {
+    const row = await this.db
+      .selectFrom('rent_roll_imports')
+      .select('confirmed_issues_json')
+      .where('organization_id', '=', organizationId)
+      .where('property_id', '=', propertyId)
+      .where('id', '=', id)
+      .executeTakeFirst();
+    return row?.confirmed_issues_json ? (JSON.parse(row.confirmed_issues_json) as ConfirmedFindings) : null;
+  }
+
   async importLeases(organizationId: string, propertyId: string, importId: string): Promise<ParsedLease[]> {
     return this.leasesWhere(organizationId, propertyId, { importId });
   }
@@ -241,7 +267,7 @@ export class RentRollRepository implements IRentRollRepository {
 }
 
 function toSummary(
-  row: Omit<ImportRow, 'rows_json' | 'organization_id' | 'confirmed_seq'>,
+  row: Omit<ImportRow, 'rows_json' | 'organization_id' | 'confirmed_seq' | 'confirmed_issues_json'>,
 ): Omit<RentRollImport, 'rows'> {
   return {
     id: row.id,

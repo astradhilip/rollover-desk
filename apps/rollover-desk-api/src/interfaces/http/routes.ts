@@ -30,6 +30,7 @@ import { z } from 'zod';
 import type { ExportWorkbook } from '../../application/use-cases/RentRollImports';
 import type { GetCurrentUser } from '../../application/use-cases/GetCurrentUser';
 import type { Login } from '../../application/use-cases/Login';
+import type { SignOut } from '../../application/use-cases/Sessions';
 import type { Portfolio } from '../../application/use-cases/Portfolio';
 import type { CreateProperty, GetProperty, ListProperties } from '../../application/use-cases/Properties';
 import type {
@@ -44,6 +45,7 @@ import type { LoginRateLimiter } from './LoginRateLimiter';
 
 export interface UseCases {
   login: Login;
+  signOut: SignOut;
   getCurrentUser: GetCurrentUser;
   listProperties: ListProperties;
   getProperty: GetProperty;
@@ -144,6 +146,17 @@ export function buildRoutes(useCases: UseCases, limiter: LoginRateLimiter): Rout
           }
           throw error;
         }
+      },
+    },
+    {
+      method: 'post',
+      path: '/auth/logout',
+      access: 'viewer',
+      summary: 'Sign out everywhere: every token issued so far stops working',
+      response: Empty,
+      handle: async ({ principal }) => {
+        await useCases.signOut.execute(principal);
+        return {};
       },
     },
     {

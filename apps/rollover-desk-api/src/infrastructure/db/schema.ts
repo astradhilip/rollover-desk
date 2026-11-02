@@ -8,6 +8,7 @@ export interface Database {
     email: string;
     password_hash: string;
     role: 'analyst' | 'viewer';
+    session_version: Generated<number>;
   };
   properties: {
     id: string;
@@ -31,6 +32,8 @@ export interface Database {
     overrides_json: string;
     rows_json: string;
     confirmed_seq: number | null;
+    /** Issues and skipped rows as confirmed; null before confirm and for imports confirmed before 0003. */
+    confirmed_issues_json: string | null;
   };
   leases: {
     id: string;

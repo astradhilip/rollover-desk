@@ -4,20 +4,19 @@ What changes between this demo and a pilot with one real team. I'd do it in orde
 
 ## 1. Before real data touches it
 
-| Area           | Now                                          | For a pilot                                                                                                                                                                 |
-| -------------- | -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Identity       | Email and password, 8-hour JWT               | SSO (for example Microsoft Entra) behind `ITokenService`. Short-lived tokens with server-side revocation, so sign-out, role change and leaving the firm take effect at once |
-| Tenancy        | `organization_id` checked by the application | The same check, plus PostgreSQL row-level security as a second layer. Per-deal access walls, if compliance requires them                                                    |
-| Database       | SQLite file                                  | Managed PostgreSQL with backups and point-in-time restore. The repository contract tests run in CI against it                                                               |
-| Secrets        | `.env`, names in `.env.example`              | A secrets manager. `JWT_SECRET` is already required in production                                                                                                           |
-| Network        | API and dashboard on localhost               | API on a private network. Only the dashboard is public, behind a proxy that appends the client address, with `TRUSTED_PROXY=1` and `TRUST_PROXY_HOPS=1`                     |
-| Rate limits    | In memory, per process                       | A shared store such as Redis, so limits hold across instances                                                                                                               |
-| Uploaded files | Parsed rows kept in the database             | The original file kept in encrypted object storage, with a retention period agreed with the data owner                                                                      |
+| Area           | Now                                          | For a pilot                                                                                                                                                                       |
+| -------------- | -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Identity       | Email and password, 8-hour JWT               | SSO (for example Microsoft Entra) behind `ITokenService`. Sign-out and role change already take effect on the next request. Add a deactivation flag, and SSO for leaving the firm |
+| Tenancy        | `organization_id` checked by the application | The same check, plus PostgreSQL row-level security as a second layer. Per-deal access walls, if compliance requires them                                                          |
+| Database       | SQLite file                                  | Managed PostgreSQL with backups and point-in-time restore. The repository contract tests run in CI against it                                                                     |
+| Secrets        | `.env`, names in `.env.example`              | A secrets manager. `JWT_SECRET` is already required in production                                                                                                                 |
+| Network        | API and dashboard on localhost               | API on a private network. Only the dashboard is public, behind a proxy that appends the client address, with `TRUSTED_PROXY=1` and `TRUST_PROXY_HOPS=1`                           |
+| Rate limits    | In memory, per process                       | A shared store such as Redis, so limits hold across instances                                                                                                                     |
+| Uploaded files | Parsed rows kept in the database             | The original file kept in encrypted object storage, with a retention period agreed with the data owner                                                                            |
 
 ## 2. Trust and audit
 
 - **Audit log:** who uploaded, confirmed, reverted, re-weighted, moved a renewal or exported, and when. Import history already records each upload and its status, but a pipeline move overwrites the deal's last state. An append-only audit table would cover both.
-- **Store issues at confirm:** the issues and acknowledgements an analyst accepted, so an export always shows what was confirmed. Today the Data Issues sheet is re-derived from stored rows.
 - **Confidential tenant data:** classify rent rolls as confidential, keep them out of logs (the API logs no request bodies today), and restrict exports further if needed. Today only analysts can export.
 
 ## 3. Running it

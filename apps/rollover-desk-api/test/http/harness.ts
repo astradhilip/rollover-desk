@@ -7,7 +7,7 @@ import { JwtTokenService } from '../../src/infrastructure/security/JwtTokenServi
 import { createApp } from '../../src/interfaces/http/app';
 import { LoginRateLimiter } from '../../src/interfaces/http/LoginRateLimiter';
 import { buildRoutes } from '../../src/interfaces/http/routes';
-import { buildUseCases } from '../../src/wiring';
+import { buildAuthenticate, buildUseCases } from '../../src/wiring';
 
 export const SECRET = 'test-secret-test-secret-test-secret-1';
 
@@ -20,7 +20,7 @@ export async function buildTestApp({ trustProxyHops = 0 } = {}) {
   const routes = buildRoutes(buildUseCases(db, tokens, { today: () => AS_OF }), new LoginRateLimiter());
   const app = createApp({
     routes,
-    tokens,
+    authenticate: buildAuthenticate(db, tokens),
     logger: pino({ level: 'silent' }),
     corsOrigins: ['https://desk.example'],
     trustProxyHops,

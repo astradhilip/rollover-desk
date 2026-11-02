@@ -1,4 +1,4 @@
-import type { Kysely } from 'kysely';
+import type { Insertable, Kysely } from 'kysely';
 import { randomUUID } from 'node:crypto';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { createDatabase } from '../../src/infrastructure/db/connection';
@@ -8,6 +8,8 @@ import type { Database } from '../../src/infrastructure/db/schema';
 import { RentRollRepository } from '../../src/infrastructure/db/RentRollRepository';
 import { UserRepository } from '../../src/infrastructure/db/UserRepository';
 import { AttentionRepository, RenewalRepository } from '../../src/infrastructure/db/WorkflowRepositories';
+
+const NO_FINDINGS = { issues: [], skippedRows: [] };
 
 const targets = [
   { name: 'SQLite', url: ':memory:' },
@@ -105,9 +107,16 @@ describe.each(targets)('repositories on $name', ({ url }) => {
       noticeMonths: 12,
       rentSteps: [{ date: '2027-01-01', annualRentCents: 5_100_000_000 }],
     };
-    expect(await rolls.confirm(orgB, property.id, imported.id, [lease])).toBe(false);
-    expect(await rolls.confirm(orgA, property.id, imported.id, [lease])).toBe(true);
-    expect(await rolls.confirm(orgA, property.id, imported.id, [lease])).toBe(false);
+    const findings = {
+      issues: [{ code: 'no_notice', severity: 'warning' as const, message: 'No notice column.' }],
+      skippedRows: [{ row: 9, reason: 'subtotal' as const, text: 'Total' }],
+    };
+    expect(await rolls.confirmedFindings(orgA, property.id, imported.id)).toBeNull();
+    expect(await rolls.confirm(orgB, property.id, imported.id, [lease], findings)).toBe(false);
+    expect(await rolls.confirm(orgA, property.id, imported.id, [lease], findings)).toBe(true);
+    expect(await rolls.confirm(orgA, property.id, imported.id, [lease], NO_FINDINGS)).toBe(false);
+    expect(await rolls.confirmedFindings(orgA, property.id, imported.id)).toEqual(findings);
+    expect(await rolls.confirmedFindings(orgB, property.id, imported.id)).toBeNull();
     const [stored] = await rolls.activeLeases(orgA, property.id);
     expect(stored).toEqual({ ...lease, id: stored!.id });
     expect(await rolls.activeLeases(orgB, property.id)).toEqual([]);
@@ -150,7 +159,7 @@ describe.each(targets)('repositories on $name', ({ url }) => {
       noticeMonths: null,
       rentSteps: [],
     };
-    const results = await Promise.all(made.map((m) => rolls.confirm(orgA, p.id, m.id, [lease])));
+    const results = await Promise.all(made.map((m) => rolls.confirm(orgA, p.id, m.id, [lease], NO_FINDINGS)));
     expect(results).toContain(true);
     const list = await rolls.listImports(orgA, p.id);
     expect(list.filter((i) => i.status === 'confirmed')).toHaveLength(1);
@@ -185,7 +194,7 @@ describe.each(targets)('repositories on $name', ({ url }) => {
   });
 
   it('rejects duplicate emails, unknown roles and orphan rows', async () => {
-    const insert = (over: Partial<Database['users']>) =>
+    const insert = (over: Partial<Insertable<Database['users']>>) =>
       db
         .insertInto('users')
         .values({

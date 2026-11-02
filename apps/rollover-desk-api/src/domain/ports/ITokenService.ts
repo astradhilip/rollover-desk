@@ -1,8 +1,8 @@
-import type { Principal } from '../entities/User';
+import type { TokenClaims } from '../entities/User';
 
 export interface ITokenService {
   readonly expiresInSeconds: number;
-  issue(principal: Principal): Promise<string>;
+  issue(claims: TokenClaims): Promise<string>;
   /** Null when the token is missing its claims, expired, or not signed by us. */
-  verify(token: string): Promise<Principal | null>;
+  verify(token: string): Promise<TokenClaims | null>;
 }

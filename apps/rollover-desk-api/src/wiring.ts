@@ -2,6 +2,7 @@
 import type { Kysely } from 'kysely';
 import { GetCurrentUser } from './application/use-cases/GetCurrentUser';
 import { Login } from './application/use-cases/Login';
+import { Authenticate, SignOut } from './application/use-cases/Sessions';
 import { Portfolio } from './application/use-cases/Portfolio';
 import { CreateProperty, GetProperty, ListProperties } from './application/use-cases/Properties';
 import {
@@ -28,6 +29,7 @@ export function buildUseCases(db: Kysely<Database>, tokens: ITokenService, clock
   const rentRolls = new RentRollRepository(db);
   return {
     login: new Login(users, new ScryptPasswordHasher(), tokens),
+    signOut: new SignOut(users),
     getCurrentUser: new GetCurrentUser(users),
     listProperties: new ListProperties(properties),
     getProperty: new GetProperty(properties),
@@ -44,4 +46,10 @@ export function buildUseCases(db: Kysely<Database>, tokens: ITokenService, clock
       clock,
     }),
   };
+}
+
+/** Who a bearer token belongs to, checked against the user record on every request. */
+export function buildAuthenticate(db: Kysely<Database>, tokens: ITokenService) {
+  const authenticate = new Authenticate(tokens, new UserRepository(db));
+  return (token: string) => authenticate.execute(token);
 }

@@ -25,10 +25,13 @@ describe('JwtTokenService', () => {
   it('refuses a short secret', () => {
     expect(() => new JwtTokenService('short')).toThrow(/32/);
   });
-  it('round-trips a principal', async () => {
+  it('round-trips the claims, and carries no role', async () => {
     const s = new JwtTokenService('k'.repeat(32));
-    const p = { userId: 'u', organizationId: 'o', role: 'viewer' as const };
-    expect(await s.verify(await s.issue(p))).toEqual(p);
+    const claims = { userId: 'u', organizationId: 'o', sessionVersion: 3 };
+    const token = await s.issue(claims);
+    expect(await s.verify(token)).toEqual(claims);
+    const payload = JSON.parse(Buffer.from(token.split('.')[1]!, 'base64url').toString('utf8'));
+    expect(payload).not.toHaveProperty('role');
   });
 });
 

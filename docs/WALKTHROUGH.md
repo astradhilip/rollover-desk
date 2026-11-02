@@ -114,10 +114,9 @@ Built with Claude Code, one reviewed pull request per milestone. [HARNESS.md](HA
 In the order I'd do them:
 
 1. **Validate before building more.** Time three analysts on three real rent rolls each, then run the parser on twenty real exports and measure how many columns map automatically. These test assumptions 1 and 3.
-2. **Store issues at confirm.** The workbook's Data Issues sheet is re-derived from stored rows today.
-3. **Excel itself:** open the workbook in real Excel. Then build the Office add-in so the analyst never leaves Excel. It was cut from this build and is designed in [EXCEL-ADDIN.md](EXCEL-ADDIN.md).
-4. **Reconcile against leases.** A rent roll is a summary and can disagree with the lease. Abstracting lease PDFs and flagging disagreements is the next real value.
-5. **An LLM fallback for unmapped headers only.** It would suggest a mapping, which the analyst still confirms.
-6. **Production:** SSO, PostgreSQL with row-level security, audit and the rest of [PRODUCTION-PATH.md](PRODUCTION-PATH.md).
+2. **Excel itself:** open the workbook in real Excel. Then build the Office add-in so the analyst never leaves Excel. It was cut from this build and is designed in [EXCEL-ADDIN.md](EXCEL-ADDIN.md).
+3. **Reconcile against leases.** A rent roll is a summary and can disagree with the lease. Abstracting lease PDFs and flagging disagreements is the next real value.
+4. **An LLM fallback for unmapped headers only.** It would suggest a mapping, which the analyst still confirms.
+5. **Production:** SSO, PostgreSQL with row-level security, audit and the rest of [PRODUCTION-PATH.md](PRODUCTION-PATH.md).
 
 To support a new export format, see [NEW-FORMAT.md](NEW-FORMAT.md).

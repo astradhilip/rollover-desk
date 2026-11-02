@@ -23,11 +23,11 @@ export class Login {
     const stored = found?.passwordHash ?? (await this.decoy);
     const valid = await this.hasher.verify(password, stored);
     if (!found || !valid) throw new InvalidCredentialsError();
-    const { user } = found;
+    const { user, sessionVersion } = found;
     const token = await this.tokens.issue({
       userId: user.id,
       organizationId: user.organizationId,
-      role: user.role,
+      sessionVersion,
     });
     return { token, expiresInSeconds: this.tokens.expiresInSeconds, user };
   }
