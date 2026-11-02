@@ -16,6 +16,6 @@ Run in order. Do not skip a step or mark it passed without seeing its output.
 7. **Commit** files by name. The message explains why, and ends with the attribution line the session requires.
 8. **Push** the branch, then `pnpm pr open --head <branch> --title <title> --body-file <file>`. The body says what changed, why, how it was tested, and what review found.
 9. **Merge:** `pnpm pr wait <n>`, then `pnpm pr merge <n>`. If CI fails, fix it on the branch. `pr merge` refuses without a passing run.
-10. **Sync:** `git switch main && git pull --ff-only`, then branch for the next milestone.
+10. **Sync:** `git fetch origin main && git switch -c <next-branch> origin/main && git branch -f main origin/main`. Don't `git switch main` first: the prompt log hook keeps that tracked file modified, which blocks switching to an older commit.
 
 Report outcomes plainly, including anything that did not run.
