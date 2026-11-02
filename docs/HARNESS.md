@@ -45,7 +45,7 @@ Work moved between sessions and accounts mid-milestone. `STATUS.md`, the prompt 
 
 ## Declined
 
-- **Claude Code plugin:** one repo has nothing to distribute. The "Excel plugin" is the Office add-in.
+- **Claude Code plugin:** one repo has nothing to distribute. The "Excel plugin" is the Office add-in, which was cut; its design is in [EXCEL-ADDIN.md](EXCEL-ADDIN.md).
 - **Mods:** no custom panel or status line solved a real problem here.
 - **Third-party MCP servers:** not needed.
 
