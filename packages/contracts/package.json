@@ -1,0 +1,20 @@
+{
+  "name": "@rollover-desk/contracts",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@rollover-desk/config": "workspace:*",
+    "@types/node": "22.18.12",
+    "typescript": "5.9.3"
+  }
+}
