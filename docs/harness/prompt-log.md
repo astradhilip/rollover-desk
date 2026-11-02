@@ -1763,3 +1763,7 @@ Use the rollover-desk MCP tools: list the properties, then get the rollover for 
   - The default port 4000 matches the API's default.
   - `.turbo` logs are gitignored, the `zod` and `tsx` version pins match the other packages, and the branch name follows the `feature/mN-...` convention.
 </agent-message>
+
+### 2026-11-02T10:50:57.006Z
+
+please continue where you left

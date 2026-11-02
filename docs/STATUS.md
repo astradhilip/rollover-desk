@@ -27,6 +27,7 @@ The plan is complete. M8 was cut by decision, because it couldn't be run or veri
 
 - The Stop hook caught a real typecheck failure during M3a.
 - Repository contract tests pass on PostgreSQL 16 in Docker as well as SQLite.
+- CI runs the workbook's LibreOffice recalculation tests rather than skipping them. The log of run 41431622735 (commit `4713a18`) shows all 11 `WorkbookWriter` tests passing, the recalculation cases taking 3 to 5 seconds each.
 - M7: the MCP server's protocol tests drive it through an MCP client over the SDK's in-memory transport. They use API responses captured from a real confirmed rent roll. A smoke run started it over stdio against a live API. A headless Claude Code run started it from `.mcp.json` and called two tools, getting the answer key's total rent.
 - M6: a fresh clone of `main` at the M5 merge installed, seeded and ran from the README steps alone. The dashboard e2e happy path then passed against it, from sign-in to workbook download, revert and viewer limits.
 - M5 workbook: every figure is a live formula with the domain's value stored beside it. Tests strip the stored values, recalculate in LibreOffice and compare cell by cell with the domain, including after changing the as-of date, loan maturity and market rent, and with the as-of date blank.
@@ -43,7 +44,6 @@ The plan is complete. M8 was cut by decision, because it couldn't be run or veri
 
 - The M5 workbook has been recalculated only in LibreOffice, not opened in real Excel. Not checked: Protected View's stored values, `SUMPRODUCT` and defined names in Excel, and dates before 1900-03-01, where Excel's fictitious 1900-02-29 shifts dates and `EDATE` returns `#NUM!`. Intake already blocks dates with years before 1900.
 - Firefox and Safari downloads.
-- Whether CI ran the workbook recalculation tests or skipped them. CI passed on M5, so the LibreOffice install step worked. But the tests fail rather than skip only if the `CI` variable reaches vitest through turbo, and the run log wasn't checked.
 
 ## Carried forward
 
