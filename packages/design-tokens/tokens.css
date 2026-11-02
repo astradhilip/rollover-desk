@@ -1,0 +1,127 @@
+/* Generated from src/index.ts. Do not edit. */
+:root,
+[data-theme='light'] {
+  --bg: #EFF4F9;
+  --surface: #FFFFFF;
+  --sunken: #E5EDF5;
+  --ink: #0C2036;
+  --muted: #4A6178;
+  --faint: #7890A6;
+  --line: #CFDCE8;
+  --line-2: #E2EAF2;
+  --accent: #0A66C8;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #E1EEFB;
+  --accent-text: #0957AC;
+  --good: #127A55;
+  --good-soft: #DFF2EA;
+  --warn: #8A5A00;
+  --warn-soft: #F9EDD2;
+  --bad: #B3302B;
+  --bad-soft: #FBE4E2;
+  --side-bg: #FFFFFF;
+  --side-ink: #0C2036;
+  --side-muted: #5D7389;
+  --side-line: #CFDCE8;
+  --side-active-bg: #E1EEFB;
+  --side-active-ink: #0957AC;
+  --c-1: #0A66C8;
+  --c-2: #0F9488;
+  --c-3: #B7791F;
+  --c-4: #6D5BD0;
+  --c-5: #D9480F;
+  --tile-shadow: 0 1px 3px rgba(12,32,54,.07);
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  --bg: #071627;
+  --surface: #0C1F35;
+  --sunken: #091A2D;
+  --ink: #DCEAF7;
+  --muted: #8AA4BD;
+  --faint: #627C95;
+  --line: #17324F;
+  --line-2: #112842;
+  --accent: #45C0FF;
+  --accent-ink: #03111F;
+  --accent-soft: #0F3354;
+  --accent-text: #7FD3FF;
+  --good: #47D19B;
+  --good-soft: #0D2F29;
+  --warn: #F2B652;
+  --warn-soft: #2F2810;
+  --bad: #FF7F78;
+  --bad-soft: #381C22;
+  --side-bg: #05111F;
+  --side-ink: #DCEAF7;
+  --side-muted: #7C96AF;
+  --side-line: #102740;
+  --side-active-bg: #0F3354;
+  --side-active-ink: #7FD3FF;
+  --c-1: #45C0FF;
+  --c-2: #47D19B;
+  --c-3: #F2B652;
+  --c-4: #A99BFF;
+  --c-5: #FF9466;
+  --tile-shadow: none;
+  color-scheme: dark;
+}
+
+:root {
+  --side-width: 236px;
+  --focus-width: 2px;
+  --hairline: 1px;
+}
+
+@theme inline {
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-sunken: var(--sunken);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-text: var(--accent-text);
+  --color-good: var(--good);
+  --color-good-soft: var(--good-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-bad: var(--bad);
+  --color-bad-soft: var(--bad-soft);
+  --color-side-bg: var(--side-bg);
+  --color-side-ink: var(--side-ink);
+  --color-side-muted: var(--side-muted);
+  --color-side-line: var(--side-line);
+  --color-side-active-bg: var(--side-active-bg);
+  --color-side-active-ink: var(--side-active-ink);
+  --color-c-1: var(--c-1);
+  --color-c-2: var(--c-2);
+  --color-c-3: var(--c-3);
+  --color-c-4: var(--c-4);
+  --color-c-5: var(--c-5);
+  --radius-*: initial;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --text-*: initial;
+  --text-xs: 12px;
+  --text-sm: 12.5px;
+  --text-base: 13.5px;
+  --text-lg: 15px;
+  --text-h2: 17px;
+  --text-h1-sm: 24px;
+  --text-h1: 28px;
+  --text-kpi: 26px;
+  --shadow-*: initial;
+  --shadow-tile: var(--tile-shadow);
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --width-side: var(--side-width);
+}

@@ -12,11 +12,11 @@ export class LoginRateLimiter {
    * Counts an attempt before the slow password check, so parallel requests can't all pass.
    * Returns seconds to wait when refused, or 0 when the attempt may go ahead.
    */
-  reserve(key: string): number {
+  reserve(key: string, max = MAX_FAILURES): number {
     const now = this.now();
     const entry = this.failures.get(key);
     if (entry && entry.resetAt > now) {
-      if (entry.count >= MAX_FAILURES) return Math.ceil((entry.resetAt - now) / 1000);
+      if (entry.count >= max) return Math.ceil((entry.resetAt - now) / 1000);
       entry.count += 1;
       return 0;
     }

@@ -44,6 +44,20 @@ describe('login', () => {
     expect(res.body.error.code).toBe('validation_error');
     expect(res.body.error.details.length).toBeGreaterThan(0);
   });
+  it('still limits guesses when the client address changes every time', async () => {
+    const proxied = await buildTestApp({ trustProxyHops: 1 });
+    const statuses: number[] = [];
+    for (let i = 0; i < 27; i += 1) {
+      const res = await request(proxied.app)
+        .post('/auth/login')
+        .set('X-Forwarded-For', `10.0.0.${i}`)
+        .send({ email: 'analyst@prairie-ridge.example', password: 'wrong' });
+      statuses.push(res.status);
+    }
+    expect(statuses.slice(0, 25).every((s) => s === 401)).toBe(true);
+    expect(statuses.slice(25)).toEqual([429, 429]);
+  }, 60_000);
+
   it('rate limits repeated failures, even with the right password, then says when to retry', async () => {
     const own = await buildTestApp();
     const attempt = (password: string) =>

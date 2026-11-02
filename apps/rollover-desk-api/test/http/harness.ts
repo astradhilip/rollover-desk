@@ -12,7 +12,7 @@ import { buildUseCases } from '../../src/wiring';
 export const SECRET = 'test-secret-test-secret-test-secret-1';
 
 /** The real stack on a throwaway database. */
-export async function buildTestApp() {
+export async function buildTestApp({ trustProxyHops = 0 } = {}) {
   const db = createDatabase(':memory:');
   await migrateToLatest(db);
   await seed(db);
@@ -23,6 +23,7 @@ export async function buildTestApp() {
     tokens,
     logger: pino({ level: 'silent' }),
     corsOrigins: ['https://desk.example'],
+    trustProxyHops,
   });
   return { app, db, routes, tokens };
 }

@@ -87,6 +87,7 @@ const param = (req: Request, name: string, pattern = /^[\w-]{1,64}$/) => {
   return value;
 };
 const pathId = (req: Request) => param(req, 'id');
+const MAX_FAILURES_PER_EMAIL = 25;
 const ATTENTION_KEY = /^[\w.-]{1,512}$/;
 
 /**
@@ -112,8 +113,16 @@ export function buildRoutes(useCases: UseCases, limiter: LoginRateLimiter): Rout
       response: LoginResponse,
       handle: async ({ req, body }) => {
         const { email, password } = body as LoginRequest;
-        const key = `${req.ip}|${email.trim().toLowerCase()}`;
-        const wait = limiter.reserve(key);
+        const normalized = email.trim().toLowerCase();
+        const key = `${req.ip}|${normalized}`;
+        // A second limit on the email alone, so rotating client addresses doesn't buy unlimited guesses.
+        // It is higher, so one person can't easily lock another out.
+        const emailKey = `email|${normalized}`;
+        let wait = limiter.reserve(key);
+        if (wait === 0) {
+          wait = limiter.reserve(emailKey, MAX_FAILURES_PER_EMAIL);
+          if (wait > 0) limiter.release(key);
+        }
         if (wait > 0) {
           throw new HttpError(429, 'rate_limited', 'Too many failed attempts. Try again later.', {
             'Retry-After': String(wait),
@@ -122,9 +131,13 @@ export function buildRoutes(useCases: UseCases, limiter: LoginRateLimiter): Rout
         try {
           const result = await useCases.login.execute(email, password);
           limiter.clear(key);
+          limiter.clear(emailKey);
           return result;
         } catch (error) {
-          if (!(error instanceof InvalidCredentialsError)) limiter.release(key);
+          if (!(error instanceof InvalidCredentialsError)) {
+            limiter.release(key);
+            limiter.release(emailKey);
+          }
           throw error;
         }
       },
