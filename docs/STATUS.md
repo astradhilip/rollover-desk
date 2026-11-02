@@ -10,9 +10,9 @@ Update at every milestone, so a fresh session can resume from here.
 | M3a API, auth, tenancy | `feature/m3a-api-auth-tenancy`        | Merged    |
 | M3b API features       | `feature/m3b-api-rollover-features`   | Merged    |
 | M4a Design system      | `feature/m4a-dashboard-design-system` | Merged    |
-| M4b Screens            | `feature/m4b-dashboard-screens`       | In review |
-| M5 Excel export        | `feature/m5-excel-export`             | Next      |
-| M6 Submission docs     | `feature/m6-submission-docs`          |           |
+| M4b Screens            | `feature/m4b-dashboard-screens`       | Merged    |
+| M5 Excel export        | `feature/m5-excel-export`             | In review |
+| M6 Submission docs     | `feature/m6-submission-docs`          | Next      |
 | Cut line               |                                       |           |
 | M7 MCP server          | `feature/m7-mcp-server`               |           |
 | M8 Office add-in       | `feature/m8-excel-addin`              |           |
@@ -25,6 +25,7 @@ Update at every milestone, so a fresh session can resume from here.
 
 - The Stop hook caught a real typecheck failure during M3a.
 - Repository contract tests pass on PostgreSQL 16 in Docker as well as SQLite.
+- M5 workbook: every figure is a live formula with the domain's value stored beside it. Tests strip the stored values, recalculate in LibreOffice and compare cell by cell with the domain, including after changing the as-of date, loan maturity and market rent, and with the as-of date blank.
 
 ## Unverified
 
@@ -38,6 +39,9 @@ Update at every milestone, so a fresh session can resume from here.
 
 - The Office add-in can't be run in real Excel on this machine (M8).
 
+- The M5 workbook has been recalculated only in LibreOffice, not opened in real Excel. Not checked: Protected View's stored values, `SUMPRODUCT` and defined names in Excel, and dates before 1900-03-01, where Excel's fictitious 1900-02-29 shifts dates and `EDATE` returns `#NUM!`. Intake already warns on years before 1900.
+- Firefox and Safari downloads; the CI LibreOffice install step until CI runs it.
+
 ## Carried forward
 
 - Tokens carry the role and organization for 8 hours. There is no role change, deactivation or logout yet; when one exists, it must invalidate or re-check tokens.
@@ -47,3 +51,6 @@ Update at every milestone, so a fresh session can resume from here.
 - The login limiter is per process, in memory.
 
 - `Property` holds one market rent per property, not per property type.
+- The export's Data Issues sheet re-derives issues from the stored rows with the current parser. If the parser changes, an old roll's issues may differ from what the analyst acknowledged at confirm. Storing issues at confirm would fix it.
+- Workbook text cells carry no quote prefix (ExcelJS can't set one), so editing a cell that holds `=...` text in Excel and pressing Enter would turn it into a formula. Opening and recalculating keeps it literal.
+- Critical Dates rows are generated at export, so flipping Month-to-month on the Rent Roll sheet doesn't add or remove notice rows.

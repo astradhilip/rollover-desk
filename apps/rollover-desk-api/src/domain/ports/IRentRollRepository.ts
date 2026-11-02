@@ -34,4 +34,6 @@ export interface IRentRollRepository {
   /** Atomically retires the active import and restores the one before it. False if this isn't the active one. */
   revert(organizationId: string, propertyId: string, id: string): Promise<boolean>;
   activeLeases(organizationId: string, propertyId: string): Promise<ParsedLease[]>;
+  /** The leases one import stored at confirm, whatever its status now. */
+  importLeases(organizationId: string, propertyId: string, importId: string): Promise<ParsedLease[]>;
 }

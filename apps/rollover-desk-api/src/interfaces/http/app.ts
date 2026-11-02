@@ -12,6 +12,7 @@ import { buildOpenApi } from './openapi';
 import type { Route } from './routes';
 
 const BODY_LIMIT = '100kb';
+const XLSX = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
 export interface AppOptions {
   routes: Route[];
@@ -56,6 +57,14 @@ export function createApp({ routes, tokens, logger, corsOrigins, trustProxyHops 
       const body = parseBody(route, req);
       const query = route.query ? validate(route.query, req.query) : undefined;
       const result = await route.handle({ req, res, principal, body, query, ...(file ? { file } : {}) });
+      if (route.download) {
+        const { filename, bytes } = result as { filename: string; bytes: Buffer };
+        res.setHeader('Content-Type', XLSX);
+        res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+        res.setHeader('Cache-Control', 'no-store');
+        res.send(bytes);
+        return;
+      }
       res.status(route.status ?? 200).json(route.response.parse(result));
     });
   }

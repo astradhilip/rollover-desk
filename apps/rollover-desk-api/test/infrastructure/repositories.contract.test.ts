@@ -111,9 +111,12 @@ describe.each(targets)('repositories on $name', ({ url }) => {
     const [stored] = await rolls.activeLeases(orgA, property.id);
     expect(stored).toEqual({ ...lease, id: stored!.id });
     expect(await rolls.activeLeases(orgB, property.id)).toEqual([]);
+    expect(await rolls.importLeases(orgB, property.id, imported.id)).toEqual([]);
     expect(await rolls.revert(orgB, property.id, imported.id)).toBe(false);
     expect(await rolls.revert(orgA, property.id, imported.id)).toBe(true);
     expect(await rolls.activeLeases(orgA, property.id)).toEqual([]);
+    // An import's own leases stay readable by id after it stops being the active one.
+    expect(await rolls.importLeases(orgA, property.id, imported.id)).toEqual([stored]);
   });
 
   it('leaves exactly one confirmed import when confirms race', async () => {

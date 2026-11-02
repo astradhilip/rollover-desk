@@ -93,7 +93,35 @@ export function createApiClient({ baseUrl, fetch: doFetch = (...a) => fetch(...a
 
   const prop = (id: string) => `/properties/${seg(id)}`;
 
+  async function download(path: string): Promise<{ blob: Blob; filename: string | null }> {
+    let response: Response;
+    try {
+      response = await doFetch(`${baseUrl}${path}`, { method: 'GET' });
+    } catch {
+      throw new ApiClientError(
+        0,
+        'network',
+        'The server could not be reached. Check your connection and try again.',
+      );
+    }
+    if (!response.ok) {
+      const parsed = ApiError.safeParse(await response.json().catch(() => null));
+      if (parsed.success) {
+        const { code, message, details } = parsed.data.error;
+        throw new ApiClientError(response.status, code, message, details);
+      }
+      throw new ApiClientError(
+        response.status,
+        'bad_response',
+        `The server returned an error (${response.status}).`,
+      );
+    }
+    const name = /filename="([^"]+)"/.exec(response.headers.get('content-disposition') ?? '');
+    return { blob: await response.blob(), filename: name?.[1] ?? null };
+  }
+
   return {
+    exportWorkbook: (id: string) => download(`${prop(id)}/export`),
     me: () => request(CurrentUser, 'GET', '/auth/me'),
     properties: () => request(PropertyList, 'GET', '/properties'),
     property: (id: string) => request(Property, 'GET', prop(id)),

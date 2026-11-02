@@ -1,5 +1,5 @@
 import type { LeaseField } from '../../domain/entities/columnMapping';
-import { ConflictError, NotFoundError } from '../../domain/entities/errors';
+import { ConflictError, NotFoundError, ValidationError } from '../../domain/entities/errors';
 import {
   chooseSheet,
   type IntakeIssue,
@@ -7,10 +7,12 @@ import {
   parseRentRoll,
 } from '../../domain/entities/rentRollIntake';
 import type { Principal } from '../../domain/entities/User';
+import { buildWorkbookModel } from '../../domain/entities/workbook';
 import type { IClock } from '../../domain/ports/IClock';
 import type { IPropertyRepository } from '../../domain/ports/IPropertyRepository';
 import type { IRentRollRepository, RentRollImport } from '../../domain/ports/IRentRollRepository';
 import type { ISpreadsheetReader } from '../../domain/ports/ISpreadsheetReader';
+import type { IWorkbookWriter } from '../../domain/ports/IWorkbookWriter';
 
 export interface ImportReview {
   import: Omit<RentRollImport, 'rows'>;
@@ -142,5 +144,45 @@ export class ReviewImport {
     if (!(await this.imports.revert(org, propertyId, id))) {
       throw new ConflictError('Only the current rent roll can be reverted.');
     }
+  }
+}
+
+export class ExportWorkbook {
+  constructor(
+    private readonly properties: IPropertyRepository,
+    private readonly imports: IRentRollRepository,
+    private readonly writer: IWorkbookWriter,
+    private readonly clock: IClock,
+  ) {}
+
+  async execute(principal: Principal, propertyId: string) {
+    const org = principal.organizationId;
+    const property = await this.properties.findById(org, propertyId);
+    if (!property) throw new NotFoundError('Property');
+    const active = (await this.imports.listImports(org, propertyId)).find((i) => i.status === 'confirmed');
+    // Everything below is keyed to this one import, so a revert landing mid-export can't mix two rolls.
+    const record = active && (await this.imports.findImport(org, propertyId, active.id));
+    const leases = record ? await this.imports.importLeases(org, propertyId, record.id) : [];
+    if (!record || leases.length === 0) throw new ValidationError('Confirm a rent roll before exporting.');
+    const asOf = this.clock.today();
+    const { issues, skippedRows } = review(record).review;
+    const model = buildWorkbookModel({
+      property,
+      leases,
+      asOf,
+      sourceFile: record.filename,
+      issues,
+      skippedRows,
+    });
+    // Property names are free text, so the file name keeps only what is safe in a header and on disk.
+    const slug = property.name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .slice(0, 60)
+      .replace(/^-+|-+$/g, '');
+    return {
+      filename: `rollover-desk-${slug || 'property'}-${asOf}.xlsx`,
+      bytes: await this.writer.write(model),
+    };
   }
 }

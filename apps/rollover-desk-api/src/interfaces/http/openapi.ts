@@ -49,7 +49,13 @@ export function buildOpenApi(routes: Route[]) {
       responses: {
         [route.status ?? 200]: {
           description: 'Success',
-          content: { 'application/json': { schema: z.toJSONSchema(route.response) } },
+          content: route.download
+            ? {
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': {
+                  schema: { type: 'string', format: 'binary' },
+                },
+              }
+            : { 'application/json': { schema: z.toJSONSchema(route.response) } },
         },
       },
     };
