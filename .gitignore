@@ -1,0 +1,17 @@
+node_modules/
+.turbo/
+dist/
+.next/
+out/
+coverage/
+*.tsbuildinfo
+.DS_Store
+*.sqlite
+*.sqlite-*
+.env
+.env.*
+!.env.example
+next-env.d.ts
+.claude/settings.local.json
+.claude/forbidden-terms.local
+render-proof/
