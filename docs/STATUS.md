@@ -2,20 +2,22 @@
 
 Update at every milestone, so a fresh session can resume from here.
 
-| Milestone              | Branch                                | State     |
-| ---------------------- | ------------------------------------- | --------- |
-| M0 Repo and harness    | `feature/m0-repo-harness`             | Merged    |
-| M1 Domain engine       | `feature/m1-domain-engine`            | Merged    |
-| M2 Rent-roll intake    | `feature/m2-rent-roll-intake`         | Merged    |
-| M3a API, auth, tenancy | `feature/m3a-api-auth-tenancy`        | Merged    |
-| M3b API features       | `feature/m3b-api-rollover-features`   | Merged    |
-| M4a Design system      | `feature/m4a-dashboard-design-system` | Merged    |
-| M4b Screens            | `feature/m4b-dashboard-screens`       | Merged    |
-| M5 Excel export        | `feature/m5-excel-export`             | Merged    |
-| M6 Submission docs     | `feature/m6-submission-docs`          | Merged    |
-| Cut line               |                                       |           |
-| M7 MCP server          | `feature/m7-mcp-server`               | In review |
-| M8 Office add-in       | `feature/m8-excel-addin`              | Next      |
+| Milestone              | Branch                                | State  |
+| ---------------------- | ------------------------------------- | ------ |
+| M0 Repo and harness    | `feature/m0-repo-harness`             | Merged |
+| M1 Domain engine       | `feature/m1-domain-engine`            | Merged |
+| M2 Rent-roll intake    | `feature/m2-rent-roll-intake`         | Merged |
+| M3a API, auth, tenancy | `feature/m3a-api-auth-tenancy`        | Merged |
+| M3b API features       | `feature/m3b-api-rollover-features`   | Merged |
+| M4a Design system      | `feature/m4a-dashboard-design-system` | Merged |
+| M4b Screens            | `feature/m4b-dashboard-screens`       | Merged |
+| M5 Excel export        | `feature/m5-excel-export`             | Merged |
+| M6 Submission docs     | `feature/m6-submission-docs`          | Merged |
+| Cut line               |                                       |        |
+| M7 MCP server          | `feature/m7-mcp-server`               | Merged |
+| M8 Office add-in       | `feature/m8-excel-addin`              | Cut    |
+
+The plan is complete. M8 was cut by decision, because it couldn't be run or verified on this machine. Its design is in [EXCEL-ADDIN.md](EXCEL-ADDIN.md).
 
 ## Verified
 
@@ -38,8 +40,6 @@ Update at every milestone, so a fresh session can resume from here.
 - The demo uses the real clock while samples are dated 2026-01-15, so some sample dates show as passed.
 
 - Trend lines on KPI tiles are left out: no history exists to plot.
-
-- The Office add-in can't be run in real Excel on this machine (M8).
 
 - The M5 workbook has been recalculated only in LibreOffice, not opened in real Excel. Not checked: Protected View's stored values, `SUMPRODUCT` and defined names in Excel, and dates before 1900-03-01, where Excel's fictitious 1900-02-29 shifts dates and `EDATE` returns `#NUM!`. Intake already blocks dates with years before 1900.
 - Firefox and Safari downloads.
