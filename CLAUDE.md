@@ -5,7 +5,7 @@ Messy commercial real estate rent roll in, explainable rollover and critical-dat
 ## Commands
 
 ```
-corepack pnpm install       # pnpm 10 via corepack
+corepack enable && pnpm install  # pnpm 10 via corepack; turbo needs pnpm on PATH
 pnpm dev                    # API and dashboard
 pnpm check                  # turbo lint typecheck test build: what CI runs
 pnpm test:hooks             # hook and scanner tests
