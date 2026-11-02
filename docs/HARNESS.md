@@ -57,3 +57,5 @@ Work moved between sessions and accounts mid-milestone. `STATUS.md`, the prompt 
 ## Incident: a failed scan that was not noticed
 
 During M2 the leak scan failed on an invented tenant name that matched the private term list, but piping its output through `tail` hid the exit code, so the commit and push went ahead. The later check of the output caught it before merge. The PR was closed, its branch deleted and recreated from `main`, and the gate now requires the scan to be chained with `&&` and never piped. The guard also can't see text written through a shell heredoc, which is how the name got past it. The closed PR's ref remains on GitHub in this private repo.
+
+The same pattern recurred after the plan was complete. A Prettier check piped through `tail` failed silently, and a commit went out with an unformatted file. It was caught before the PR opened and fixed in a second commit. The gate's rule now covers every check, not only the leak scan.
