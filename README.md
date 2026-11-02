@@ -163,7 +163,7 @@ How it works:
 - **Credentials:** `.mcp.json` defaults to the demo viewer's password, an exception to "secrets by name only". That password is synthetic and already listed above.
 - **Failed sign-ins:** sign-in is shared between concurrent calls, and a wrong password is tried once. Repeated tool calls can't trip the API's login lockout, which would also lock the person out of the dashboard.
 
-`pnpm --filter rollover-desk-mcp smoke` starts it over stdio and calls every tool against a running API.
+`pnpm --filter rollover-desk-mcp smoke` starts it over stdio and calls every tool against a running API. It needs a confirmed rent roll, so confirm `clean.xlsx` first. The dashboard e2e reverts its roll at the end.
 
 ### How it was built
 
