@@ -29,3 +29,7 @@ How the AI tooling was set up, and why. The final version is completed at M6.
 
 - The forbidden-term list is local, so CI scans for credentials only. The full scan runs on the developer machine before each push.
 - `guard.mjs` is a safety net, not a security boundary: an unusual command could evade its patterns.
+
+## Incident: a failed scan that was not noticed
+
+During M2 the leak scan failed on an invented tenant name that matched the private term list, but piping its output through `tail` hid the exit code, so the commit and push went ahead. The later check of the output caught it before merge. The PR was closed, its branch deleted and recreated from `main`, and the gate now requires the scan to be chained with `&&` and never piped. The guard also can't see text written through a shell heredoc, which is how the name got past it. The closed PR's ref remains on GitHub in this private repo.
