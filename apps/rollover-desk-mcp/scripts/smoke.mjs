@@ -37,7 +37,10 @@ console.log(`   total rent $${(rollover.schedule.totals.annualRentCents / 100).t
 await call('get_critical_dates', { propertyId });
 const { leases } = await call('list_leases', { propertyId });
 const scored = leases.find((l) => l.risk.scored);
-assert.ok(scored, 'No scored lease. Confirm a rent roll first, for example data/synthetic/samples/clean.xlsx.');
+assert.ok(
+  scored,
+  'No scored lease. Confirm a rent roll first, for example data/synthetic/samples/clean.xlsx.',
+);
 const lease = await call('explain_lease_risk', { propertyId, leaseId: scored.id });
 console.log(
   `   suite ${lease.suite}: risk ${lease.risk.score.toFixed(1)} from ${lease.risk.components.length} components`,
