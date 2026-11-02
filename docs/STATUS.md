@@ -9,9 +9,9 @@ Update at every milestone, so a fresh session can resume from here.
 | M2 Rent-roll intake    | `feature/m2-rent-roll-intake`         | Merged    |
 | M3a API, auth, tenancy | `feature/m3a-api-auth-tenancy`        | Merged    |
 | M3b API features       | `feature/m3b-api-rollover-features`   | Merged    |
-| M4a Design system      | `feature/m4a-dashboard-design-system` | In review |
-| M4b Screens            | `feature/m4b-dashboard-screens`       | Next      |
-| M5 Excel export        | `feature/m5-excel-export`             |           |
+| M4a Design system      | `feature/m4a-dashboard-design-system` | Merged    |
+| M4b Screens            | `feature/m4b-dashboard-screens`       | In review |
+| M5 Excel export        | `feature/m5-excel-export`             | Next      |
 | M6 Submission docs     | `feature/m6-submission-docs`          |           |
 | Cut line               |                                       |           |
 | M7 MCP server          | `feature/m7-mcp-server`               |           |
@@ -27,6 +27,12 @@ Update at every milestone, so a fresh session can resume from here.
 - Repository contract tests pass on PostgreSQL 16 in Docker as well as SQLite.
 
 ## Unverified
+
+- M4b finish review used impeccable's degraded path, because the shipped reviewer agents aren't available here. It ran twice, its eight fixes were applied, and they were checked by eye rather than by a third review. The code review also predates those eight fixes.
+
+- The dashboard's e2e script and render proof need a running stack, so they ran locally and not in CI.
+
+- The demo uses the real clock while samples are dated 2026-01-15, so some sample dates show as passed.
 
 - Trend lines on KPI tiles are left out: no history exists to plot.
 

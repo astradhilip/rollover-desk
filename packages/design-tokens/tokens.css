@@ -70,6 +70,7 @@
 
 :root {
   --side-width: 236px;
+  --board-column: 252px;
   --focus-width: 2px;
   --hairline: 1px;
 }

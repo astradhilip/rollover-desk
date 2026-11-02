@@ -76,4 +76,5 @@ export async function readLimited(
 }
 
 /** Sign-in goes through /api/session, which keeps the token out of browser code. */
-export const isBlockedPath = (path: string) => path === '/auth/login';
+// Compared the way Express routes: case-insensitive, trailing slash ignored.
+export const isBlockedPath = (path: string) => path.toLowerCase().replace(/\/+$/, '') === '/auth/login';

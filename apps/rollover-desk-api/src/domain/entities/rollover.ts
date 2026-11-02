@@ -44,6 +44,9 @@ export interface RolloverBucket {
   leases: number;
   areaSf: number;
   annualRentCents: number;
+  /** Leases in this bucket summed without area or rent. */
+  leasesMissingArea: number;
+  leasesMissingRent: number;
   /** Share of total leased area and rent, 0 to 1. Null when the total is zero. */
   areaShare: number | null;
   rentShare: number | null;
@@ -89,6 +92,8 @@ export function rolloverSchedule(leases: Lease[], asOf: string): RolloverSchedul
       leases: group.length,
       areaSf,
       annualRentCents,
+      leasesMissingArea: group.filter((l) => l.areaSf === null).length,
+      leasesMissingRent: group.filter((l) => l.annualRentCents === null).length,
       areaShare: ratio(areaSf, totals.areaSf),
       rentShare: ratio(annualRentCents, totals.annualRentCents),
       cumulativeAreaShare: ratio(cumArea, totals.areaSf),

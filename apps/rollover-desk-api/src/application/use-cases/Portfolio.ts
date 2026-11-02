@@ -85,6 +85,8 @@ export class Portfolio {
         leases: vacating.length,
         areaSf: vacating.reduce((n, l) => n + (l.areaSf ?? 0), 0),
         annualRentCents: vacating.reduce((n, l) => n + (l.annualRentCents ?? 0), 0),
+        leasesMissingArea: vacating.filter((l) => l.areaSf === null).length,
+        leasesMissingRent: vacating.filter((l) => l.annualRentCents === null).length,
       },
     };
   }
@@ -113,6 +115,7 @@ export class Portfolio {
     const deals = await this.ports.renewals.list(principal.organizationId, propertyId);
     return {
       ...this.view(lease, loaded),
+      asOf: loaded.asOf,
       criticalDates: criticalDates(lease, loaded.property, loaded.asOf),
       deal: dealFor(lease, deals),
     };

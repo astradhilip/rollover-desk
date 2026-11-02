@@ -175,6 +175,8 @@ const Bucket = z.object({
   leases: z.number().int(),
   areaSf: z.number(),
   annualRentCents: z.number().int(),
+  leasesMissingArea: z.number().int(),
+  leasesMissingRent: z.number().int(),
   areaShare: z.number().nullable(),
   rentShare: z.number().nullable(),
   cumulativeAreaShare: z.number().nullable(),
@@ -218,7 +220,10 @@ export const RolloverView = z.object({
     leasesMissingName: z.number().int(),
   }),
   largestTenant: z.object({ tenant: z.string(), expiresFirst: z.boolean().nullable() }).nullable(),
-  projectedVacating: Tally,
+  projectedVacating: Tally.extend({
+    leasesMissingArea: z.number().int(),
+    leasesMissingRent: z.number().int(),
+  }),
 });
 export type RolloverView = z.infer<typeof RolloverView>;
 
@@ -281,6 +286,7 @@ export const RenewalStage = z.enum([
 export type RenewalStage = z.infer<typeof RenewalStage>;
 
 export const LeaseDetail = LeaseView.extend({
+  asOf: IsoDate,
   criticalDates: CriticalDatePartition,
   deal: z
     .object({ stage: RenewalStage, vacatingReason: z.string().nullable(), note: z.string().nullable() })

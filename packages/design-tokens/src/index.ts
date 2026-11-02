@@ -81,7 +81,12 @@ export const text = {
   kpi: '26px',
 } as const;
 
-export const layout = { sideWidth: '236px', focusWidth: '2px', hairline: '1px' } as const;
+export const layout = {
+  sideWidth: '236px',
+  boardColumn: '252px',
+  focusWidth: '2px',
+  hairline: '1px',
+} as const;
 
 const kebab = (name: string) => name.replace(/[A-Z0-9]/g, (c) => `-${c.toLowerCase()}`);
 
@@ -110,6 +115,7 @@ ${colorBlock(dark, shadow.dark, 'dark')}
 
 :root {
   --side-width: ${layout.sideWidth};
+  --board-column: ${layout.boardColumn};
   --focus-width: ${layout.focusWidth};
   --hairline: ${layout.hairline};
 }

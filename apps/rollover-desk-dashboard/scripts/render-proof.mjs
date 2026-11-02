@@ -52,13 +52,36 @@ for (const theme of THEMES) {
     await page.waitForURL(`${BASE}/`);
     await page.waitForSelector('tbody a');
     const href = await page.getAttribute('tbody a', 'href');
-    const extra = (process.env.PROOF_ROUTES ?? '').split(',').filter(Boolean);
-    for (const route of ['/', '/account', href, ...extra.map((r) => `${href}${r}`)]) {
+    const base = href;
+    const routes = [
+      '/',
+      '/account',
+      base,
+      ...['leases', 'pipeline', 'dates', 'rent-rolls', 'weights'].map((r) => `${base}/${r}`),
+    ];
+    for (const route of routes) {
       await page.goto(`${BASE}${route}`);
       await check(
         page,
         `${route.replace(/\/p\/[^/]+/, 'property').replace(/\W+/g, '_') || 'home'}-${theme}-${width}`,
       );
+    }
+    // Detail pages, when a rent roll has been loaded: run e2e first.
+    for (const [list, name, selector] of [
+      ['leases', 'lease-detail', 'tr:has-text("Turtle Creek") a'],
+      ['rent-rolls', 'import-review', 'tr:has-text("Waiting for review") a'],
+      ['rent-rolls', 'import-confirmed', 'tr:has-text("Current") a'],
+    ]) {
+      await page.goto(`${BASE}${base}/${list}`);
+      await page.waitForLoadState('networkidle');
+      const link = await page.getAttribute(selector, 'href', { timeout: 3000 }).catch(() => null);
+      if (link) {
+        await page.goto(`${BASE}${link}`);
+        await check(page, `${name}-${theme}-${width}`);
+      } else {
+        failures += 1;
+        console.error(`${name}: nothing to capture; run e2e and load a rent roll first`);
+      }
     }
     await context.close();
   }

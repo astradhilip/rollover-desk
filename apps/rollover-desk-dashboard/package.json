@@ -10,7 +10,8 @@
     "lint": "eslint . && stylelint \"app/**/*.css\" && node scripts/design-detect.mjs",
     "typecheck": "tsc --noEmit -p tsconfig.typecheck.json",
     "test": "vitest run",
-    "proof": "node scripts/render-proof.mjs"
+    "proof": "node scripts/render-proof.mjs",
+    "e2e": "node scripts/e2e.mjs"
   },
   "dependencies": {
     "@rollover-desk/api-client": "workspace:*",
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "@rollover-desk/config": "workspace:*",
+    "@rollover-desk/synthetic": "workspace:*",
     "@tailwindcss/postcss": "^4.1.14",
     "@types/node": "22.18.12",
     "@types/react": "19.2.2",
