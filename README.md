@@ -23,6 +23,7 @@ rollover-desk reads the file, shows every doubt instead of guessing, and answers
 - [Quick start](#quick-start)
 - [Configuration](#configuration)
 - [How it works](#how-it-works)
+- [Architecture](#architecture)
 - [Project structure](#project-structure)
 - [API](#api)
 - [Ask an agent (MCP)](#ask-an-agent-mcp)
@@ -170,6 +171,90 @@ Four rules shape every feature:
 3. **Every number explains itself.** Formulas live in pure, tested domain functions, and the risk score lists its parts.
 4. **Exact arithmetic.** Dates are `YYYY-MM-DD` strings computed in UTC, and money is integer cents. See [ADR 0007](docs/adr/0007-dates-and-money.md).
 
+## Architecture
+
+### The system
+
+```
+ browser ──► dashboard (Next.js) ──► same-origin proxy ──┐
+                                                          │  HTTP + bearer token
+ Claude Code / MCP client ──► MCP server (stdio) ─────────┤
+                                                          ▼
+                                                 rollover-desk API ──► SQLite or PostgreSQL
+                                                          │
+                                                          └──► .xlsx workbook
+```
+
+- **The API owns every rule and every number.** The dashboard and the MCP server are clients. Neither calculates rollover, dates or risk, so a figure can't differ between the screen, the agent and the workbook.
+- **One contract for everyone:** `packages/contracts` holds a zod schema for every request, response and error. The API validates against it, and `packages/api-client` validates every response against it, for both the dashboard and the MCP server.
+
+### Hexagonal architecture in the API
+
+The API follows hexagonal architecture, also called ports and adapters. The business logic sits in the middle and knows nothing about HTTP, databases, Excel or JWTs. It states what it needs as **ports** (TypeScript interfaces), and **adapters** at the edge implement them.
+
+```
+               driving adapters                                  driven adapters
+             (call into the app)                               (the app calls out)
+
+  HTTP routes, auth, OpenAPI ─┐                            ┌─► Kysely repositories ─► SQLite / PostgreSQL
+  (src/interfaces/http)       │   ┌────────────────────┐   ├─► ExcelJS reader (.xlsx, .csv)
+                              ├──►│ application        │   ├─► ExcelJS workbook writer
+                              │   │   use cases        │   ├─► jose JWT token service
+                              │   │ ┌────────────────┐ │   ├─► scrypt password hasher
+                              │   │ │ domain         │ ├──►┤
+                              │   │ │ pure functions │ │   └─► system clock
+                              │   │ │ + ports        │ │
+                              │   │ └────────────────┘ │
+                              │   └────────────────────┘
+                              │           ▲
+  server.ts + wiring.ts ──────┴───────────┘  the composition root: the only code that picks adapters
+```
+
+| Layer            | Folder                           | Holds                                                                                                          | May import                                   |
+| ---------------- | -------------------------------- | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| Domain           | `src/domain/entities`            | Pure functions and types: intake, rollover, WALT, critical dates, risk, commissions, the workbook model        | Nothing outside it                           |
+| Ports            | `src/domain/ports`               | Interfaces the core needs from the outside world                                                               | Domain types only                            |
+| Application      | `src/application/use-cases`      | Use cases: upload, review, confirm, revert, export, sign in, authenticate, sign out, and the portfolio queries | Domain and ports only                        |
+| Driving adapters | `src/interfaces/http`            | Express routes, validation against the contracts, auth middleware, error mapping                               | Application and domain, never infrastructure |
+| Driven adapters  | `src/infrastructure`             | Database, spreadsheets, security, clock                                                                        | Domain, ports and libraries                  |
+| Composition root | `src/server.ts`, `src/wiring.ts` | Builds the adapters and hands them to the use cases                                                            | Everything                                   |
+
+Every port and the adapter behind it:
+
+| Port                                                                                                          | Adapter                                    | What swapping it would take                                    |
+| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------ | -------------------------------------------------------------- |
+| `IPropertyRepository`, `IRentRollRepository`, `IUserRepository`, `IAttentionRepository`, `IRenewalRepository` | Kysely repositories in `infrastructure/db` | Already runs on SQLite or PostgreSQL by `DATABASE_URL`         |
+| `ISpreadsheetReader`                                                                                          | `SpreadsheetReader` (ExcelJS, plus CSV)    | A new reader, for example a property-management system feed    |
+| `IWorkbookWriter`                                                                                             | `WorkbookWriter` (ExcelJS)                 | Another spreadsheet library; the domain's workbook model stays |
+| `ITokenService`                                                                                               | `JwtTokenService` (jose)                   | SSO, for example Microsoft Entra                               |
+| `IPasswordHasher`                                                                                             | `ScryptPasswordHasher`                     | Argon2, or none once SSO replaces passwords                    |
+| `IClock`                                                                                                      | `SystemClock`                              | Tests pass a fixed date instead                                |
+
+**One request, end to end:** `POST /properties/:id/imports/:importId/confirm`
+
+1. **HTTP adapter:** the route authenticates the bearer token and checks the analyst role. It validates the body against the shared contract, then calls the `ReviewImport` use case.
+2. **Use case:** `ReviewImport.confirm` loads the property and import through `IPropertyRepository` and `IRentRollRepository`, always scoped by the caller's organization. It re-runs the domain's `parseRentRoll`, refuses on blocking issues or unacknowledged warnings, and asks the repository to confirm.
+3. **Domain:** `parseRentRoll` is a pure function: rows in, leases and issues out. It has no I/O and no clock.
+4. **Driven adapter:** `RentRollRepository` stores the leases and the accepted issues, and switches the current rent roll, in one database transaction.
+
+Export works the same way. The domain builds a `WorkbookModel` (every sheet, formula and stored value as plain data), and only the ExcelJS adapter knows how to turn that into an `.xlsx` file.
+
+**What it buys**
+
+- **Formulas tested without I/O:** every calculation is unit-tested with hand-worked numbers, and none of those tests touch a database, HTTP or the clock.
+- **One contract suite, two databases:** the same repository tests run on SQLite and on PostgreSQL, so both adapters keep the port's promises, including organization isolation.
+- **Small changes stay small:** replacing the database, the spreadsheet library or the identity provider touches one adapter and one line of wiring.
+- **Deterministic dates:** `now` comes in through `IClock`, so no test depends on the day it runs.
+- **Enforced, not just described:** ESLint rejects an import that crosses a layer the wrong way. A planted violation was shown to fail.
+
+The cost is more files and more indirection than a single Express app, which I accepted for the testability. See [ADR 0001](docs/adr/0001-ports-and-adapters.md).
+
+### Outside the API
+
+- **MCP server:** it acts as a driving adapter at the system level. It turns MCP tool calls into calls to the API, through the same typed client, and adds no logic of its own. Its tests swap the network for recorded API answers.
+- **Dashboard:** this is a thin client, not a hexagon. Screens render what the API returns. The view logic that is there (formatting, "not recorded" labels) is in plain functions with their own tests, and the session rules sit in `lib/session.ts`.
+- **Design system:** `packages/design-tokens` is the single source of visual values, and `packages/ui-web` builds components only from them. Lint rejects raw colours and sizes.
+
 ## Project structure
 
 ```
@@ -191,8 +276,6 @@ packages/
 data/synthetic/               seeded generator, four sample rent rolls and their answer key
 docs/                         problem, research, ADRs, production path, guides, status
 ```
-
-Lint enforces the API's layers: `domain` imports nothing outside itself, `application` imports only `domain`, and only `server.ts` and `wiring.ts` choose concrete adapters. See [ADR 0001](docs/adr/0001-ports-and-adapters.md).
 
 ## API
 
