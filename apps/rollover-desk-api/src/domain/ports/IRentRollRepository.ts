@@ -1,5 +1,5 @@
 import type { LeaseField } from '../entities/columnMapping';
-import type { ParsedLease } from '../entities/rentRollIntake';
+import type { IntakeIssue, ParsedLease, SkippedRow } from '../entities/rentRollIntake';
 import type { Cell } from '../entities/spreadsheetCells';
 
 export type ImportStatus = 'pending' | 'confirmed' | 'replaced' | 'reverted';
@@ -17,6 +17,12 @@ export interface RentRollImport {
   rows: Cell[][];
 }
 
+/** What the analyst saw and accepted when confirming: the record behind the export's Data Issues sheet. */
+export interface ConfirmedFindings {
+  issues: IntakeIssue[];
+  skippedRows: SkippedRow[];
+}
+
 export type NewImport = Omit<RentRollImport, 'id' | 'status' | 'createdAt' | 'overrides'>;
 
 export interface IRentRollRepository {
@@ -29,8 +35,23 @@ export interface IRentRollRepository {
     id: string,
     overrides: RentRollImport['overrides'],
   ): Promise<boolean>;
-  /** Atomically stores the leases and makes this the active import. False if it is no longer pending. */
-  confirm(organizationId: string, propertyId: string, id: string, leases: ParsedLease[]): Promise<boolean>;
+  /**
+   * Atomically stores the leases and the findings the analyst accepted, and makes this the active import.
+   * False if it is no longer pending.
+   */
+  confirm(
+    organizationId: string,
+    propertyId: string,
+    id: string,
+    leases: ParsedLease[],
+    findings: ConfirmedFindings,
+  ): Promise<boolean>;
+  /** The findings stored at confirm. Null if not confirmed, or confirmed before findings were stored. */
+  confirmedFindings(
+    organizationId: string,
+    propertyId: string,
+    id: string,
+  ): Promise<ConfirmedFindings | null>;
   /** Atomically retires the active import and restores the one before it. False if this isn't the active one. */
   revert(organizationId: string, propertyId: string, id: string): Promise<boolean>;
   activeLeases(organizationId: string, propertyId: string): Promise<ParsedLease[]>;

@@ -7,9 +7,14 @@ import {
   isBlockedPath,
   isSameOrigin,
   readLimited,
+  sessionEnded,
 } from '../lib/session';
 
 describe('session rules', () => {
+  it('counts a session as ended only on success, or a token that was already dead', () => {
+    for (const ended of [200, 204, 401]) expect(sessionEnded(ended), String(ended)).toBe(true);
+    for (const live of [null, 403, 429, 500, 502, 503]) expect(sessionEnded(live), String(live)).toBe(false);
+  });
   it('sets an httpOnly, strict cookie, secure in production', () => {
     expect(cookieOptions(60, true)).toMatchObject({
       httpOnly: true,

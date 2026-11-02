@@ -8,7 +8,7 @@ import { SystemClock } from './infrastructure/SystemClock';
 import { createApp } from './interfaces/http/app';
 import { LoginRateLimiter } from './interfaces/http/LoginRateLimiter';
 import { buildRoutes } from './interfaces/http/routes';
-import { buildUseCases } from './wiring';
+import { buildAuthenticate, buildUseCases } from './wiring';
 
 const config = loadConfig(process.env);
 const logger = pino();
@@ -20,7 +20,7 @@ const routes = buildRoutes(buildUseCases(db, tokens, new SystemClock()), new Log
 
 createApp({
   routes,
-  tokens,
+  authenticate: buildAuthenticate(db, tokens),
   logger,
   corsOrigins: config.corsOrigins,
   trustProxyHops: config.trustProxyHops,

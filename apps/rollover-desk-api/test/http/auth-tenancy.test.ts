@@ -112,13 +112,19 @@ describe('every route declares and enforces its access', () => {
   });
   it('rejects forged, tampered, expired and wrong-audience tokens', async () => {
     const route = { method: 'get' as const, path: '/auth/me' };
+    // A real user's claims, so each token below fails only for the flaw it names.
+    const real = JSON.parse(
+      Buffer.from(tokens[OAK_ANALYST.email]!.split('.')[1]!, 'base64url').toString('utf8'),
+    ) as { sub: string; org: string; ver: number };
     const sign = (key: string, build: (j: SignJWT) => SignJWT) =>
       build(
-        new SignJWT({ org: 'o', role: 'analyst' }).setProtectedHeader({ alg: 'HS256' }).setSubject('u'),
+        new SignJWT({ org: real.org, ver: real.ver })
+          .setProtectedHeader({ alg: 'HS256' })
+          .setSubject(real.sub),
       ).sign(new TextEncoder().encode(key));
     const good = (j: SignJWT) =>
       j.setIssuer('rollover-desk-api').setAudience('rollover-desk').setExpirationTime('1h');
-    const none = `${Buffer.from('{"alg":"none"}').toString('base64url')}.${Buffer.from('{"sub":"u","org":"o","role":"analyst"}').toString('base64url')}.`;
+    const none = `${Buffer.from('{"alg":"none"}').toString('base64url')}.${Buffer.from(JSON.stringify({ sub: real.sub, org: real.org, ver: real.ver })).toString('base64url')}.`;
     const bad = [
       await sign('another-secret-another-secret-another', good),
       await sign(SECRET, (j) =>
@@ -142,9 +148,9 @@ describe('every route declares and enforces its access', () => {
       expect(res.body.error.code, route.path).toBe('forbidden');
     }
   });
-  it('makes every non-GET route analyst-only', () => {
-    const open = ctx.routes.filter((r) => r.method !== 'get' && r.access === 'viewer');
-    expect(open).toEqual([]);
+  it('makes every non-GET route analyst-only, except signing yourself out', () => {
+    const open = ctx.routes.filter((r) => r.method !== 'get' && r.access === 'viewer').map((r) => r.path);
+    expect(open).toEqual(['/auth/logout']);
   });
 });
 

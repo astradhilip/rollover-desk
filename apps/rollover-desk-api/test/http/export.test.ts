@@ -119,6 +119,59 @@ describe('GET /properties/:id/export', () => {
     await download(ANALYST!.email).expect(400);
   });
 
+  it('lists the issues accepted at confirm, not ones re-derived later', async () => {
+    const analyst = auth[ANALYST!.email]!;
+    // No notice column: a warning the analyst accepts.
+    const csv = Buffer.from('Suite,Tenant,SF,Annual Rent,Expiration\n100,Acme,1000,25000,2030-01-31\n');
+    const up = await request(ctx.app)
+      .post(`/properties/${pid}/imports`)
+      .set(analyst)
+      .attach('file', csv, 'accepted.csv')
+      .expect(201);
+    const id = up.body.import.id as string;
+    await request(ctx.app)
+      .post(`/properties/${pid}/imports/${id}/confirm`)
+      .set(analyst)
+      .send({ acknowledgeWarnings: true })
+      .expect(200);
+    const issueMessages = async () => {
+      const book = new ExcelJS.Workbook();
+      await book.xlsx.load((await download(ANALYST!.email).expect(200)).body);
+      const messages: unknown[] = [];
+      book.getWorksheet('Data Issues')!.eachRow((row, r) => r > 1 && messages.push(row.getCell(3).value));
+      return messages;
+    };
+    const accepted = await issueMessages();
+    expect(
+      accepted.some((m) => /notice/i.test(String(m))),
+      String(accepted),
+    ).toBe(true);
+
+    // Stand in for an intake change after confirm: the stored rows now parse with no notice warning.
+    const rows = [
+      ['Suite', 'Tenant', 'SF', 'Annual Rent', 'Expiration', 'Notice Months'],
+      ['100', 'Acme', 1000, 25000, { date: '2030-01-31' }, 6],
+    ];
+    await ctx.db
+      .updateTable('rent_roll_imports')
+      .set({ rows_json: JSON.stringify(rows) })
+      .where('id', '=', id)
+      .execute();
+    expect(await issueMessages()).toEqual(accepted);
+
+    // An import confirmed before findings were stored has none recorded, so they are rebuilt from its rows.
+    await ctx.db
+      .updateTable('rent_roll_imports')
+      .set({ confirmed_issues_json: null })
+      .where('id', '=', id)
+      .execute();
+    const rebuilt = await issueMessages();
+    expect(
+      rebuilt.some((m) => /notice/i.test(String(m))),
+      String(rebuilt),
+    ).toBe(false);
+  });
+
   it('refuses with nothing to export', async () => {
     await download(ANALYST!.email).expect(400);
   });

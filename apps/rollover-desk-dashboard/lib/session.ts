@@ -78,3 +78,11 @@ export async function readLimited(
 /** Sign-in goes through /api/session, which keeps the token out of browser code. */
 // Compared the way Express routes: case-insensitive, trailing slash ignored.
 export const isBlockedPath = (path: string) => path.toLowerCase().replace(/\/+$/, '') === '/auth/login';
+
+/**
+ * Whether the API has ended the session, given its answer to sign-out (null when it couldn't be reached).
+ * A 401 means the token was already dead, so there is nothing left to end. Anything else leaves the token
+ * working, so the cookie should stay and the person should be told they're still signed in.
+ */
+export const sessionEnded = (status: number | null) =>
+  status !== null && ((status >= 200 && status < 300) || status === 401);

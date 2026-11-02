@@ -1,5 +1,5 @@
 import { jwtVerify, SignJWT } from 'jose';
-import type { Principal } from '../../domain/entities/User';
+import type { TokenClaims } from '../../domain/entities/User';
 import type { ITokenService } from '../../domain/ports/ITokenService';
 
 const ISSUER = 'rollover-desk-api';
@@ -19,8 +19,8 @@ export class JwtTokenService implements ITokenService {
     this.key = new TextEncoder().encode(secret);
   }
 
-  issue({ userId, organizationId, role }: Principal): Promise<string> {
-    return new SignJWT({ org: organizationId, role })
+  issue({ userId, organizationId, sessionVersion }: TokenClaims): Promise<string> {
+    return new SignJWT({ org: organizationId, ver: sessionVersion })
       .setProtectedHeader({ alg: ALGORITHM })
       .setSubject(userId)
       .setIssuer(ISSUER)
@@ -30,17 +30,16 @@ export class JwtTokenService implements ITokenService {
       .sign(this.key);
   }
 
-  async verify(token: string): Promise<Principal | null> {
+  async verify(token: string): Promise<TokenClaims | null> {
     try {
       const { payload } = await jwtVerify(token, this.key, {
         issuer: ISSUER,
         audience: AUDIENCE,
         algorithms: [ALGORITHM],
       });
-      const { sub, org, role } = payload;
-      if (typeof sub !== 'string' || typeof org !== 'string' || (role !== 'analyst' && role !== 'viewer'))
-        return null;
-      return { userId: sub, organizationId: org, role };
+      const { sub, org, ver } = payload;
+      if (typeof sub !== 'string' || typeof org !== 'string' || !Number.isInteger(ver)) return null;
+      return { userId: sub, organizationId: org, sessionVersion: ver as number };
     } catch {
       return null;
     }

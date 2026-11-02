@@ -131,7 +131,8 @@ export class ReviewImport {
     if (current.review.issues.length > 0 && !acknowledgeWarnings) {
       throw new ConflictError('This import has warnings. Acknowledge them to confirm.');
     }
-    if (!(await this.imports.confirm(org, propertyId, id, current.review.leases))) {
+    const { issues, skippedRows } = current.review;
+    if (!(await this.imports.confirm(org, propertyId, id, current.review.leases, { issues, skippedRows }))) {
       throw new ConflictError('This import has already been confirmed.');
     }
     return { ...current, import: { ...current.import, status: 'confirmed' } };
@@ -165,7 +166,10 @@ export class ExportWorkbook {
     const leases = record ? await this.imports.importLeases(org, propertyId, record.id) : [];
     if (!record || leases.length === 0) throw new ValidationError('Confirm a rent roll before exporting.');
     const asOf = this.clock.today();
-    const { issues, skippedRows } = review(record).review;
+    // Data Issues shows what the analyst accepted at confirm, even if intake has changed since. Imports confirmed
+    // before findings were stored have nothing recorded, so theirs are rebuilt from the stored rows.
+    const { issues, skippedRows } =
+      (await this.imports.confirmedFindings(org, propertyId, record.id)) ?? review(record).review;
     const model = buildWorkbookModel({
       property,
       leases,

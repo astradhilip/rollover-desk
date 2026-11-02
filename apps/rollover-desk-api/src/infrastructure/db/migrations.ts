@@ -129,6 +129,21 @@ const migrations: Record<string, Migration> = {
       await db.schema.alterTable('properties').dropColumn('risk_weights_json').execute();
     },
   },
+  '0003_session_versions_confirmed_issues': {
+    async up(db: Kysely<unknown>) {
+      // Tokens carry this; moving it on ends every session the user has.
+      await db.schema
+        .alterTable('users')
+        .addColumn('session_version', 'integer', (c) => c.notNull().defaultTo(0))
+        .execute();
+      // What the analyst saw and acknowledged when confirming, kept as the record the export shows.
+      await db.schema.alterTable('rent_roll_imports').addColumn('confirmed_issues_json', 'text').execute();
+    },
+    async down(db: Kysely<unknown>) {
+      await db.schema.alterTable('rent_roll_imports').dropColumn('confirmed_issues_json').execute();
+      await db.schema.alterTable('users').dropColumn('session_version').execute();
+    },
+  },
 };
 
 export async function migrateToLatest(db: Kysely<Database>): Promise<void> {

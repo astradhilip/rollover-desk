@@ -1,6 +1,13 @@
 import { LoginResponse } from '@rollover-desk/contracts';
 import { type NextRequest, NextResponse } from 'next/server';
-import { API_URL, clientAddress, cookieOptions, isSameOrigin, SESSION_COOKIE } from '@/lib/session';
+import {
+  API_URL,
+  clientAddress,
+  cookieOptions,
+  isSameOrigin,
+  SESSION_COOKIE,
+  sessionEnded,
+} from '@/lib/session';
 
 const fail = (status: number, code: string, message: string) =>
   NextResponse.json({ error: { code, message } }, { status });
@@ -32,6 +39,19 @@ export async function POST(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   if (!isSameOrigin(request.headers.get('origin'), request.headers.get('host'))) {
     return fail(403, 'forbidden', 'This request came from another site.');
+  }
+  // End the session at the API first, so the token is dead everywhere, not only gone from this browser.
+  const token = request.cookies.get(SESSION_COOKIE)?.value;
+  if (token) {
+    const upstream = await fetch(`${API_URL}/auth/logout`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      // A hung API should end in "still signed in", not a sign-out that never finishes.
+      signal: AbortSignal.timeout(5000),
+    }).catch(() => null);
+    if (!sessionEnded(upstream?.status ?? null)) {
+      return fail(502, 'internal_error', 'The API could not end the session.');
+    }
   }
   const response = NextResponse.json({});
   response.cookies.set(SESSION_COOKIE, '', cookieOptions(0));

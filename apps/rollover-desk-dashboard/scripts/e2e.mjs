@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { chromium } from 'playwright-core';
 
 const BASE = process.env.BASE_URL ?? 'http://localhost:3000';
+const API = process.env.API_URL ?? 'http://localhost:4000';
 const SAMPLES = new URL('../../../data/synthetic/samples/', import.meta.url);
 const key = JSON.parse(readFileSync(new URL('answer-key.json', SAMPLES), 'utf8'));
 const occupied = key.leases.filter((l) => l.status === 'occupied');
@@ -118,11 +119,16 @@ await page.getByRole('button', { name: 'Revert rent roll' }).click();
 await page.getByText('Reverted').first().waitFor();
 step('revert with a two-step confirm');
 
+// Keep the token, to check that signing out ended it at the API and not only in this browser.
+const token = (await page.context().cookies()).find((c) => c.name === 'rd_session')?.value;
+assert.ok(token);
 await page.getByRole('button', { name: 'Sign out' }).click();
 await page.waitForURL(`${BASE}/sign-in`);
 await page.goto(`${BASE}/`);
 await page.waitForURL(`${BASE}/sign-in`);
-step('signed out for real');
+const reused = await fetch(`${API}/auth/me`, { headers: { Authorization: `Bearer ${token}` } });
+assert.equal(reused.status, 401);
+step('signed out for real, and the old token no longer works');
 
 await signIn('viewer@prairie-ridge.example', 'demo-prairie-viewer');
 await page.goto(`${BASE}${property}/rent-rolls`);

@@ -29,7 +29,7 @@ rollover-desk reads the file, shows every doubt instead of guessing, and answers
 - [Scripts](#scripts)
 - [Testing](#testing)
 - [Extending the project](#extending-the-project)
-- [Known limitations](#known-limitations)
+- [Scope and tradeoffs](#scope-and-tradeoffs)
 - [Documentation](#documentation)
 - [How it was built](#how-it-was-built)
 
@@ -78,7 +78,7 @@ Six sheets: Assumptions, Rent Roll, Rollover Schedule, WALT, Critical Dates and 
 ### Security and multi-tenancy
 
 - **Login:** email and password (scrypt), with signed, expiring tokens and a rate limit on login.
-- **Session:** the dashboard keeps the token in an httpOnly cookie, behind a same-origin proxy.
+- **Session:** the dashboard keeps the token in an httpOnly cookie, behind a same-origin proxy. Every request re-reads the user's role, and signing out ends the user's tokens everywhere.
 - **Organizations:** each user belongs to one. The organization comes only from the verified token, and another organization's records return 404.
 - **Roles:** `analyst` can change things and `viewer` can only read. Every route declares its access, and a test checks each one.
 
@@ -198,29 +198,30 @@ Lint enforces the API's layers: `domain` imports nothing outside itself, `applic
 
 Interactive OpenAPI docs are at http://localhost:4000/docs when the API is running. Every route except `health` and `login` needs a bearer token. **Viewer** routes are open to both roles, and **analyst** routes need the analyst role.
 
-| Method           | Path                                         | Access           | Purpose                                          |
-| ---------------- | -------------------------------------------- | ---------------- | ------------------------------------------------ |
-| `GET`            | `/health`                                    | public           | Liveness                                         |
-| `POST`           | `/auth/login`                                | public           | Sign in, receive a token                         |
-| `GET`            | `/auth/me`                                   | viewer           | The signed-in user and organization              |
-| `GET` / `POST`   | `/properties`                                | viewer / analyst | List properties / create one                     |
-| `GET`            | `/properties/:id`                            | viewer           | One property                                     |
-| `POST` / `GET`   | `/properties/:id/imports`                    | analyst / viewer | Upload a rent roll / import history              |
-| `GET`            | `/properties/:id/imports/:importId`          | viewer           | One import with its mapping and issues           |
-| `PUT`            | `/properties/:id/imports/:importId/mapping`  | analyst          | Correct the column mapping                       |
-| `POST`           | `/properties/:id/imports/:importId/confirm`  | analyst          | Make it the current rent roll                    |
-| `POST`           | `/properties/:id/imports/:importId/revert`   | analyst          | Retire it and restore the previous one           |
-| `GET`            | `/properties/:id/rollover`                   | viewer           | Rollover, WALT, concentration, loan and vacating |
-| `GET`            | `/properties/:id/leases`                     | viewer           | Leases with risk                                 |
-| `GET`            | `/properties/:id/leases/:leaseId`            | viewer           | One lease: risk explained, dates, pipeline       |
-| `GET`            | `/properties/:id/leases/:leaseId/commission` | viewer           | Commission estimate for given rates              |
-| `GET`            | `/properties/:id/critical-dates`             | viewer           | Critical dates for every lease                   |
-| `GET`            | `/properties/:id/attention`                  | viewer           | The attention queue                              |
-| `PUT` / `DELETE` | `/properties/:id/attention/:key`             | analyst          | Mark done or dismissed / undo                    |
-| `GET`            | `/properties/:id/renewals`                   | viewer           | Renewal and backfill pipeline                    |
-| `POST`           | `/properties/:id/renewals/moves`             | analyst          | Move leases between stages                       |
-| `PUT`            | `/properties/:id/risk-weights`               | analyst          | Save risk weights (must total 100)               |
-| `GET`            | `/properties/:id/export`                     | analyst          | Download the live-formula workbook               |
+| Method           | Path                                         | Access           | Purpose                                           |
+| ---------------- | -------------------------------------------- | ---------------- | ------------------------------------------------- |
+| `GET`            | `/health`                                    | public           | Liveness                                          |
+| `POST`           | `/auth/login`                                | public           | Sign in, receive a token                          |
+| `POST`           | `/auth/logout`                               | viewer           | Sign out: every token issued so far stops working |
+| `GET`            | `/auth/me`                                   | viewer           | The signed-in user and organization               |
+| `GET` / `POST`   | `/properties`                                | viewer / analyst | List properties / create one                      |
+| `GET`            | `/properties/:id`                            | viewer           | One property                                      |
+| `POST` / `GET`   | `/properties/:id/imports`                    | analyst / viewer | Upload a rent roll / import history               |
+| `GET`            | `/properties/:id/imports/:importId`          | viewer           | One import with its mapping and issues            |
+| `PUT`            | `/properties/:id/imports/:importId/mapping`  | analyst          | Correct the column mapping                        |
+| `POST`           | `/properties/:id/imports/:importId/confirm`  | analyst          | Make it the current rent roll                     |
+| `POST`           | `/properties/:id/imports/:importId/revert`   | analyst          | Retire it and restore the previous one            |
+| `GET`            | `/properties/:id/rollover`                   | viewer           | Rollover, WALT, concentration, loan and vacating  |
+| `GET`            | `/properties/:id/leases`                     | viewer           | Leases with risk                                  |
+| `GET`            | `/properties/:id/leases/:leaseId`            | viewer           | One lease: risk explained, dates, pipeline        |
+| `GET`            | `/properties/:id/leases/:leaseId/commission` | viewer           | Commission estimate for given rates               |
+| `GET`            | `/properties/:id/critical-dates`             | viewer           | Critical dates for every lease                    |
+| `GET`            | `/properties/:id/attention`                  | viewer           | The attention queue                               |
+| `PUT` / `DELETE` | `/properties/:id/attention/:key`             | analyst          | Mark done or dismissed / undo                     |
+| `GET`            | `/properties/:id/renewals`                   | viewer           | Renewal and backfill pipeline                     |
+| `POST`           | `/properties/:id/renewals/moves`             | analyst          | Move leases between stages                        |
+| `PUT`            | `/properties/:id/risk-weights`               | analyst          | Save risk weights (must total 100)                |
+| `GET`            | `/properties/:id/export`                     | analyst          | Download the live-formula workbook                |
 
 Errors share one shape, `{ "error": { "code", "message", "details" } }`, defined in `packages/contracts`.
 
@@ -289,7 +290,6 @@ Ideas that build on what's here, with where each one plugs in:
 | **Scenarios**                 | Renewal probability and downtime per lease, giving expected rather than contractual rollover | Domain functions next to `rollover.ts`; Assumptions inputs in the workbook                            |
 | **Critical-date reminders**   | Email, Teams or calendar (`.ics`) alerts before notice dates                                 | A scheduler use case over `criticalDates`, plus a notifier port                                       |
 | **Market rent by space type** | Mark-to-market per office, retail or industrial space                                        | Extend `Property` and `markToMarketPct`                                                               |
-| **Store issues at confirm**   | The export shows exactly what was acknowledged                                               | Persist issues in `confirm`; read them in `ExportWorkbook`                                            |
 | **Office add-in**             | Check a rent roll without leaving Excel                                                      | Designed in [docs/EXCEL-ADDIN.md](docs/EXCEL-ADDIN.md)                                                |
 
 ### Intelligence
@@ -311,13 +311,13 @@ Ideas that build on what's here, with where each one plugs in:
 
 [docs/PRODUCTION-PATH.md](docs/PRODUCTION-PATH.md) orders the production work, and [docs/ASSUMPTIONS.md](docs/ASSUMPTIONS.md) lists what to validate with analysts before building more.
 
-## Known limitations
+## Scope and tradeoffs
 
-- **Excel:** the workbook has been recalculated in LibreOffice, in tests and CI, but not yet opened in real Excel.
-- **Sessions:** sign-out clears the cookie, but the token stays valid until it expires, and there is no role change or deactivation yet.
-- **Login limiter:** it lives in memory, per process. Production also needs a proxy that appends the client address. See [docs/STATUS.md](docs/STATUS.md).
-- **Market rent:** there is one market rent per property, not per space type.
-- **Dates:** sample rent rolls are dated 2026-01-15 and the app uses today's date, so some sample dates already show as passed.
+Choices made on purpose for a single-team demo, each with what would change it:
+
+- **Login limiter in memory:** right for one API process. More than one instance needs a shared store such as Redis, and production needs a proxy that appends the client address. See [docs/PRODUCTION-PATH.md](docs/PRODUCTION-PATH.md).
+- **One market rent per property:** enough for single-use buildings. Mixed-use properties would need one per space type; see [Extending the project](#extending-the-project).
+- **Real clock, fixed sample dates:** the samples are dated 2026-01-15 and the app uses today's date, so some sample notice dates already show as passed. Analysis is never back-dated to make a demo look busier.
 
 [docs/STATUS.md](docs/STATUS.md) keeps the full list of what is verified, unverified and carried forward.
 

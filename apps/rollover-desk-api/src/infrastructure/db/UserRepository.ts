@@ -16,13 +16,16 @@ export class UserRepository implements IUserRepository {
         'users.role',
         'users.organization_id',
         'users.password_hash',
+        'users.session_version',
         'organizations.name as organization_name',
       ]);
   }
 
   async findCredentialsByEmail(email: string) {
     const row = await this.select().where('users.email', '=', email).executeTakeFirst();
-    return row ? { user: toUser(row), passwordHash: row.password_hash } : null;
+    return row
+      ? { user: toUser(row), passwordHash: row.password_hash, sessionVersion: row.session_version }
+      : null;
   }
 
   async findById(organizationId: string, id: string) {
@@ -31,6 +34,23 @@ export class UserRepository implements IUserRepository {
       .where('users.id', '=', id)
       .executeTakeFirst();
     return row ? toUser(row) : null;
+  }
+
+  async findSession(organizationId: string, id: string) {
+    const row = await this.select()
+      .where('users.organization_id', '=', organizationId)
+      .where('users.id', '=', id)
+      .executeTakeFirst();
+    return row ? { user: toUser(row), sessionVersion: row.session_version } : null;
+  }
+
+  async endSessions(organizationId: string, id: string) {
+    await this.db
+      .updateTable('users')
+      .set((eb) => ({ session_version: eb('session_version', '+', 1) }))
+      .where('organization_id', '=', organizationId)
+      .where('id', '=', id)
+      .execute();
   }
 }
 
