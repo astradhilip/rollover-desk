@@ -1,0 +1,73 @@
+{
+  "id": "bb18c157-5115-4064-a688-a3c3da45c571",
+  "sourceRow": 2,
+  "suite": "110",
+  "tenantName": "Mesquite Logistics LLC",
+  "status": "occupied",
+  "areaSf": 5600,
+  "annualRentCents": 14179200,
+  "commencementDate": "2020-04-01",
+  "expirationDate": "2033-02-28",
+  "isMonthToMonth": false,
+  "noticeMonths": 12,
+  "rentSteps": [],
+  "remainingYears": 6.324435318275154,
+  "noticeDate": "2032-02-28",
+  "expiresBeforeLoanMaturity": false,
+  "markToMarketPct": 0.4218009478672986,
+  "risk": {
+    "scored": true,
+    "score": 11.28875440898845,
+    "components": [
+      {
+        "key": "time_to_expiry",
+        "label": "Time to expiry",
+        "weight": 40,
+        "appliedWeight": 40,
+        "raw": 0,
+        "points": 0,
+        "detail": "75.9 months remaining"
+      },
+      {
+        "key": "notice_urgency",
+        "label": "Notice urgency",
+        "weight": 20,
+        "appliedWeight": 20,
+        "raw": 0,
+        "points": 0,
+        "detail": "Notice due in 1944 days"
+      },
+      {
+        "key": "concentration",
+        "label": "Tenant concentration",
+        "weight": 25,
+        "appliedWeight": 25,
+        "raw": 45.155017635953804,
+        "points": 11.28875440898845,
+        "detail": "11.3% of in-place rent"
+      },
+      {
+        "key": "loan_mismatch",
+        "label": "Expires before loan maturity",
+        "weight": 15,
+        "appliedWeight": 15,
+        "raw": 0,
+        "points": 0,
+        "detail": "Runs past loan maturity"
+      }
+    ],
+    "leftOut": []
+  },
+  "asOf": "2026-11-02",
+  "criticalDates": {
+    "passed": [],
+    "upcoming": [
+      { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 },
+      { "kind": "notice", "label": "Renewal notice due", "date": "2032-02-28", "daysAway": 1944 },
+      { "kind": "expiration", "label": "Lease expiration", "date": "2033-02-28", "daysAway": 2310 }
+    ],
+    "absent": [],
+    "next": { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 }
+  },
+  "deal": null
+}

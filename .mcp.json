@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "rollover-desk": {
+      "command": "pnpm",
+      "args": ["--silent", "--filter", "rollover-desk-mcp", "start"],
+      "env": {
+        "ROLLOVER_DESK_API_URL": "${ROLLOVER_DESK_API_URL:-http://localhost:4000}",
+        "ROLLOVER_DESK_EMAIL": "${ROLLOVER_DESK_EMAIL:-viewer@prairie-ridge.example}",
+        "ROLLOVER_DESK_PASSWORD": "${ROLLOVER_DESK_PASSWORD:-demo-prairie-viewer}"
+      }
+    }
+  }
+}

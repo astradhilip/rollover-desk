@@ -1,0 +1,10 @@
+{
+  "properties": [
+    {
+      "id": "ecdd509d-7525-4b6e-b81f-b2d0ee34af26",
+      "name": "Trinity Commerce Center",
+      "loanMaturityDate": "2028-06-30",
+      "marketRentPsfCents": 3600
+    }
+  ]
+}

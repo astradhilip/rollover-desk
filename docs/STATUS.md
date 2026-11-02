@@ -12,10 +12,10 @@ Update at every milestone, so a fresh session can resume from here.
 | M4a Design system      | `feature/m4a-dashboard-design-system` | Merged    |
 | M4b Screens            | `feature/m4b-dashboard-screens`       | Merged    |
 | M5 Excel export        | `feature/m5-excel-export`             | Merged    |
-| M6 Submission docs     | `feature/m6-submission-docs`          | In review |
+| M6 Submission docs     | `feature/m6-submission-docs`          | Merged    |
 | Cut line               |                                       |           |
-| M7 MCP server          | `feature/m7-mcp-server`               | Next      |
-| M8 Office add-in       | `feature/m8-excel-addin`              |           |
+| M7 MCP server          | `feature/m7-mcp-server`               | In review |
+| M8 Office add-in       | `feature/m8-excel-addin`              | Next      |
 
 ## Verified
 
@@ -25,6 +25,7 @@ Update at every milestone, so a fresh session can resume from here.
 
 - The Stop hook caught a real typecheck failure during M3a.
 - Repository contract tests pass on PostgreSQL 16 in Docker as well as SQLite.
+- M7: the MCP server's protocol tests drive it through an MCP client over the SDK's in-memory transport. They use API responses captured from a real confirmed rent roll. A smoke run started it over stdio against a live API. A headless Claude Code run started it from `.mcp.json` and called two tools, getting the answer key's total rent.
 - M6: a fresh clone of `main` at the M5 merge installed, seeded and ran from the README steps alone. The dashboard e2e happy path then passed against it, from sign-in to workbook download, revert and viewer limits.
 - M5 workbook: every figure is a live formula with the domain's value stored beside it. Tests strip the stored values, recalculate in LibreOffice and compare cell by cell with the domain, including after changing the as-of date, loan maturity and market rent, and with the as-of date blank.
 

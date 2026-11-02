@@ -1,0 +1,27 @@
+{
+  "name": "rollover-desk-mcp",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/server.ts",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@rollover-desk/api-client": "workspace:*",
+    "@rollover-desk/contracts": "workspace:*",
+    "tsx": "4.20.6",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@rollover-desk/config": "workspace:*",
+    "@types/node": "22.18.12",
+    "eslint": "^9.39.5",
+    "typescript": "5.9.3",
+    "vitest": "3.2.4"
+  }
+}
