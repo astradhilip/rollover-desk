@@ -56,6 +56,7 @@ const VACANT =
 const MAYBE_VACANT = /^(vacant|vacancy|available|unleased|not\s+leased)\b/i;
 const MTM = /^(mtm|m-t-m|m\/m|month[\s-]*to[\s-]*month|holdover|hold[\s-]*over)$/i;
 const PER_AREA_CELL = /\/\s*(sf|rsf|sq)|\bpsf\b/i;
+const MAX_RENT_CENTS = 1e15;
 const RANGE_YEARS = 30;
 const PSF_MIN_CENTS = 100;
 const PSF_MAX_CENTS = 50_000;
@@ -391,12 +392,17 @@ function readRent(area: number | null, context: RowContext): number | null {
       };
     const factor = field === 'monthlyRent' || field === 'monthlyRentPsf' ? 12 : 1;
     if (flat) return { field, recorded: true, cents: toCents(value * factor) };
-    return {
-      field,
-      recorded: true,
-      cents: area === null ? null : toCents(value * factor * area),
-      perAreaWithoutArea: area === null,
-    };
+    const cents = area === null ? null : toCents(value * factor * area);
+    if (cents !== null && cents > MAX_RENT_CENTS) {
+      issue(
+        'invalid_number',
+        'blocking',
+        `Rent for suite ${key} works out too large to be real. Check the rent and area columns.`,
+        field,
+      );
+      return { field, recorded: true, cents: null };
+    }
+    return { field, recorded: true, cents, perAreaWithoutArea: area === null };
   });
   const primary = results[0];
   if (!primary) return null;

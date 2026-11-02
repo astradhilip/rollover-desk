@@ -80,8 +80,9 @@ describe('login limiter under pressure', () => {
 });
 
 describe('every route declares and enforces its access', () => {
-  const concrete = (path: string) => path.replace(':id', 'x');
-  const call = (r: { method: 'get' | 'post'; path: string }) => request(ctx.app)[r.method](concrete(r.path));
+  const concrete = (path: string) => path.replace(/:\w+/g, 'x');
+  const call = (r: { method: 'get' | 'post' | 'put' | 'delete'; path: string }) =>
+    request(ctx.app)[r.method](concrete(r.path));
 
   it('has only health and login public', () => {
     expect(ctx.routes.filter((r) => r.access === 'public').map((r) => r.path)).toEqual([

@@ -5,7 +5,9 @@ import { createDatabase } from '../../src/infrastructure/db/connection';
 import { migrateToLatest } from '../../src/infrastructure/db/migrations';
 import { PropertyRepository } from '../../src/infrastructure/db/PropertyRepository';
 import type { Database } from '../../src/infrastructure/db/schema';
+import { RentRollRepository } from '../../src/infrastructure/db/RentRollRepository';
 import { UserRepository } from '../../src/infrastructure/db/UserRepository';
+import { AttentionRepository, RenewalRepository } from '../../src/infrastructure/db/WorkflowRepositories';
 
 const targets = [
   { name: 'SQLite', url: ':memory:' },
@@ -68,6 +70,115 @@ describe.each(targets)('repositories on $name', ({ url }) => {
     expect(await repo.findById(orgA, orgA)).toMatchObject({ email: emailA });
     expect(await repo.findById(orgB, orgA)).toBeNull();
     expect(await repo.findCredentialsByEmail('none@example.com')).toBeNull();
+  });
+
+  it('stores leases with large rents exactly, scoped to their organization, and reverts', async () => {
+    const properties = new PropertyRepository(db);
+    const rolls = new RentRollRepository(db);
+    const property = await properties.create(orgA, {
+      name: 'Big',
+      loanMaturityDate: null,
+      marketRentPsfCents: null,
+    });
+    const input = {
+      propertyId: property.id,
+      filename: 'a.csv',
+      asOf: '2026-01-15',
+      createdBy: orgA,
+      sheetNotes: [],
+      rows: [['é', 1, { date: '2029-01-31' }, null]],
+    };
+    const imported = await rolls.createImport(orgA, input);
+    expect(imported.rows).toEqual(input.rows);
+    expect(await rolls.findImport(orgB, property.id, imported.id)).toBeNull();
+    const lease = {
+      id: 'x',
+      sourceRow: 2,
+      suite: '100',
+      tenantName: 'Acme',
+      status: 'occupied' as const,
+      areaSf: 1000.5,
+      annualRentCents: 5_000_000_000,
+      commencementDate: null,
+      expirationDate: '2029-01-31',
+      isMonthToMonth: false,
+      noticeMonths: 12,
+      rentSteps: [{ date: '2027-01-01', annualRentCents: 5_100_000_000 }],
+    };
+    expect(await rolls.confirm(orgB, property.id, imported.id, [lease])).toBe(false);
+    expect(await rolls.confirm(orgA, property.id, imported.id, [lease])).toBe(true);
+    expect(await rolls.confirm(orgA, property.id, imported.id, [lease])).toBe(false);
+    const [stored] = await rolls.activeLeases(orgA, property.id);
+    expect(stored).toEqual({ ...lease, id: stored!.id });
+    expect(await rolls.activeLeases(orgB, property.id)).toEqual([]);
+    expect(await rolls.revert(orgB, property.id, imported.id)).toBe(false);
+    expect(await rolls.revert(orgA, property.id, imported.id)).toBe(true);
+    expect(await rolls.activeLeases(orgA, property.id)).toEqual([]);
+  });
+
+  it('leaves exactly one confirmed import when confirms race', async () => {
+    const properties = new PropertyRepository(db);
+    const rolls = new RentRollRepository(db);
+    const p = await properties.create(orgA, {
+      name: 'Race',
+      loanMaturityDate: null,
+      marketRentPsfCents: null,
+    });
+    const input = {
+      propertyId: p.id,
+      filename: 'a.csv',
+      asOf: '2026-01-15',
+      createdBy: orgA,
+      sheetNotes: [],
+      rows: [],
+    };
+    const made = await Promise.all(Array.from({ length: 4 }, () => rolls.createImport(orgA, input)));
+    const lease = {
+      id: 'x',
+      sourceRow: 2,
+      suite: '100',
+      tenantName: 'A',
+      status: 'occupied' as const,
+      areaSf: 1,
+      annualRentCents: 1,
+      commencementDate: null,
+      expirationDate: null,
+      isMonthToMonth: false,
+      noticeMonths: null,
+      rentSteps: [],
+    };
+    const results = await Promise.all(made.map((m) => rolls.confirm(orgA, p.id, m.id, [lease])));
+    expect(results).toContain(true);
+    const list = await rolls.listImports(orgA, p.id);
+    expect(list.filter((i) => i.status === 'confirmed')).toHaveLength(1);
+    expect(await rolls.activeLeases(orgA, p.id)).toHaveLength(1);
+  });
+
+  it('keeps attention states and renewal deals by organization, and upserts', async () => {
+    const properties = new PropertyRepository(db);
+    const p = await properties.create(orgA, { name: 'W', loanMaturityDate: null, marketRentPsfCents: null });
+    const attention = new AttentionRepository(db);
+    await attention.set(orgA, p.id, 'k', 'done', orgA);
+    await attention.set(orgA, p.id, 'k', 'dismissed', orgA);
+    expect((await attention.list(orgA, p.id)).get('k')).toBe('dismissed');
+    expect((await attention.list(orgB, p.id)).size).toBe(0);
+    expect(await attention.clear(orgB, p.id, 'k')).toBe(false);
+    expect(await attention.clear(orgA, p.id, 'k')).toBe(true);
+    const renewals = new RenewalRepository(db);
+    const deal = { suite: '1', tenantKey: 't', stage: 'contacted' as const, vacatingReason: null, note: 'n' };
+    await renewals.upsert(orgA, p.id, deal);
+    await renewals.upsert(orgA, p.id, { ...deal, stage: 'proposal' });
+    expect(await renewals.list(orgA, p.id)).toEqual([{ ...deal, stage: 'proposal' }]);
+    expect(await renewals.list(orgB, p.id)).toEqual([]);
+    expect(
+      await properties.setRiskWeights(orgB, p.id, {
+        time_to_expiry: 100,
+        notice_urgency: 0,
+        concentration: 0,
+        loan_mismatch: 0,
+      }),
+    ).toBe(false);
+    expect(await properties.riskWeights(orgA, p.id)).toBeNull();
   });
 
   it('rejects duplicate emails, unknown roles and orphan rows', async () => {

@@ -62,6 +62,7 @@ export async function seed(db: Kysely<Database>): Promise<void> {
         name: PROPERTY.name,
         loan_maturity_date: PROPERTY.loanMaturityDate,
         market_rent_psf_cents: PROPERTY.marketRentPsfCents,
+        risk_weights_json: null,
       })
       .execute();
   });
