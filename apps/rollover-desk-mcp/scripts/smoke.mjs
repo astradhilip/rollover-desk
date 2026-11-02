@@ -30,14 +30,17 @@ const call = async (name, args = {}) => {
 const { tools } = await client.listTools();
 console.log(`ok: ${tools.length} tools listed`);
 const { properties } = await call('list_properties');
-assert.ok(properties.length > 0, 'no properties visible');
+assert.ok(properties.length > 0, 'No properties visible. Seed the database first.');
 const propertyId = properties[0].id;
 const rollover = await call('get_rollover', { propertyId });
 console.log(`   total rent $${(rollover.schedule.totals.annualRentCents / 100).toLocaleString('en-US')}`);
 await call('get_critical_dates', { propertyId });
 const { leases } = await call('list_leases', { propertyId });
 const scored = leases.find((l) => l.risk.scored);
-assert.ok(scored, 'no scored lease');
+assert.ok(
+  scored,
+  'No scored lease. Confirm a rent roll first, for example data/synthetic/samples/clean.xlsx.',
+);
 const lease = await call('explain_lease_risk', { propertyId, leaseId: scored.id });
 console.log(
   `   suite ${lease.suite}: risk ${lease.risk.score.toFixed(1)} from ${lease.risk.components.length} components`,
