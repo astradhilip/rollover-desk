@@ -18,6 +18,7 @@ How the AI tooling was set up, and why. Every milestone was built by Claude Code
 | impeccable `audit` and `polish`                         | Screenshot review of every screen at three widths, both themes                               | The design skills check the result, not just guide the writing          |
 | `scripts/leak-scan.mjs`                                 | Scans files and full history                                                                 | Private material must not reach the repo, even in a deleted line        |
 | `scripts/github-pr.mjs`                                 | PRs through the API                                                                          | The token stays in git's credential helper                              |
+| `.mcp.json`: `rollover-desk` server                     | Read-only tools over the running API                                                         | Lets Claude Code check the app's real numbers. Signs in as the viewer   |
 | Memory                                                  | Assignment facts and working rules                                                           | Outside git, so a scrubbed copy is in `harness/memory-snapshot.md`      |
 | Context window                                          | `STATUS.md` is the resume point; formulas load on demand                                     | A new session can resume cheaply                                        |
 
@@ -46,7 +47,7 @@ Work moved between sessions and accounts mid-milestone. `STATUS.md`, the prompt 
 
 - **Claude Code plugin:** one repo has nothing to distribute. The "Excel plugin" is the Office add-in.
 - **Mods:** no custom panel or status line solved a real problem here.
-- **Third-party MCP servers:** not needed. The project's own read-only MCP server is a post-cut-line milestone.
+- **Third-party MCP servers:** not needed.
 
 ## Limits
 

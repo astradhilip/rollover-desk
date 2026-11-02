@@ -1,0 +1,6 @@
+{
+  "extends": "@rollover-desk/config/tsconfig.node.json",
+  // DOM for the fetch types the shared API client is written against.
+  "compilerOptions": { "noEmit": true, "lib": ["ES2023", "DOM", "DOM.Iterable"] },
+  "include": ["src", "test", "vitest.config.ts"]
+}

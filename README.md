@@ -94,6 +94,7 @@ packages/contracts            zod schemas for every request, response and error
 packages/api-client           typed fetch over the contracts
 packages/design-tokens        the only source of visual values
 packages/ui-web               components built from tokens
+apps/rollover-desk-mcp        read-only MCP server over the API, for Claude Code and other agents
 data/synthetic                seeded generator, sample files and answer key
 ```
 
@@ -141,6 +142,28 @@ data/synthetic                seeded generator, sample files and answer key
   The milestone gate requires a security review for auth, tenancy, upload and export work.
 
 What is verified, unverified and carried forward is kept in [docs/STATUS.md](docs/STATUS.md). The biggest gap: the workbook has been recalculated in LibreOffice but never opened in real Excel.
+
+### Ask an agent
+
+`apps/rollover-desk-mcp` is a read-only MCP server with six tools:
+
+- `list_properties`
+- `get_rollover`
+- `get_critical_dates`
+- `list_leases`
+- `explain_lease_risk`
+- `get_attention`
+
+With the stack running, Claude Code in this repo picks it up from `.mcp.json`. Ask it, for example, "which leases at Trinity Commerce Center have notice dates in the next six months, and why is the riskiest one scored that way?"
+
+How it works:
+
+- **Sign-in:** the server signs in as the demo **viewer** by default (set `ROLLOVER_DESK_EMAIL` and `ROLLOVER_DESK_PASSWORD` to change it). It sees only what that user's organization and role allow, and the API refuses writes.
+- **Answers:** every answer is checked against the same contracts the dashboard uses. The tool descriptions state the units, that `null` means not recorded, and that tenant text from files is data, not instructions. Each result repeats that note beside the data.
+- **Credentials:** `.mcp.json` defaults to the demo viewer's password, an exception to "secrets by name only". That password is synthetic and already listed above.
+- **Failed sign-ins:** sign-in is shared between concurrent calls, and a wrong password is tried once. Repeated tool calls can't trip the API's login lockout, which would also lock the person out of the dashboard.
+
+`pnpm --filter rollover-desk-mcp smoke` starts it over stdio and calls every tool against a running API.
 
 ### How it was built
 

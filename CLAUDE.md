@@ -18,6 +18,7 @@ pnpm pr open|wait|merge     # pull requests through the GitHub API
 ```
 apps/rollover-desk-api        Express 5, ports and adapters, SQLite now, PostgreSQL ready
 apps/rollover-desk-dashboard  Next.js 15, React 19, Tailwind v4, Blueprint light and dark
+apps/rollover-desk-mcp        read-only MCP server over the API; .mcp.json at the root
 packages/contracts            zod schemas for every request, response and error
 packages/api-client           typed fetch over contracts
 packages/design-tokens        the only source of visual values

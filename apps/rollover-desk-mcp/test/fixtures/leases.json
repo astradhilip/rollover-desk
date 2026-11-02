@@ -1,0 +1,983 @@
+{
+  "leases": [
+    {
+      "id": "bb18c157-5115-4064-a688-a3c3da45c571",
+      "sourceRow": 2,
+      "suite": "110",
+      "tenantName": "Mesquite Logistics LLC",
+      "status": "occupied",
+      "areaSf": 5600,
+      "annualRentCents": 14179200,
+      "commencementDate": "2020-04-01",
+      "expirationDate": "2033-02-28",
+      "isMonthToMonth": false,
+      "noticeMonths": 12,
+      "rentSteps": [],
+      "remainingYears": 6.324435318275154,
+      "noticeDate": "2032-02-28",
+      "expiresBeforeLoanMaturity": false,
+      "markToMarketPct": 0.4218009478672986,
+      "risk": {
+        "scored": true,
+        "score": 11.28875440898845,
+        "components": [
+          {
+            "key": "time_to_expiry",
+            "label": "Time to expiry",
+            "weight": 40,
+            "appliedWeight": 40,
+            "raw": 0,
+            "points": 0,
+            "detail": "75.9 months remaining"
+          },
+          {
+            "key": "notice_urgency",
+            "label": "Notice urgency",
+            "weight": 20,
+            "appliedWeight": 20,
+            "raw": 0,
+            "points": 0,
+            "detail": "Notice due in 1944 days"
+          },
+          {
+            "key": "concentration",
+            "label": "Tenant concentration",
+            "weight": 25,
+            "appliedWeight": 25,
+            "raw": 45.155017635953804,
+            "points": 11.28875440898845,
+            "detail": "11.3% of in-place rent"
+          },
+          {
+            "key": "loan_mismatch",
+            "label": "Expires before loan maturity",
+            "weight": 15,
+            "appliedWeight": 15,
+            "raw": 0,
+            "points": 0,
+            "detail": "Runs past loan maturity"
+          }
+        ],
+        "leftOut": []
+      }
+    },
+    {
+      "id": "b501e435-285d-42c9-b9df-13fd750b15ef",
+      "sourceRow": 3,
+      "suite": "120",
+      "tenantName": "Cedar Elm Partners",
+      "status": "occupied",
+      "areaSf": 3400,
+      "annualRentCents": 9261600,
+      "commencementDate": "2018-11-01",
+      "expirationDate": "2032-11-30",
+      "isMonthToMonth": false,
+      "noticeMonths": 9,
+      "rentSteps": [],
+      "remainingYears": 6.078028747433265,
+      "noticeDate": "2032-02-29",
+      "expiresBeforeLoanMaturity": false,
+      "markToMarketPct": 0.32158590308370044,
+      "risk": {
+        "scored": true,
+        "score": 3.365001024585697,
+        "components": [
+          {
+            "key": "time_to_expiry",
+            "label": "Time to expiry",
+            "weight": 40,
+            "appliedWeight": 40,
+            "raw": 0,
+            "points": 0,
+            "detail": "72.9 months remaining"
+          },
+          {
+            "key": "notice_urgency",
+            "label": "Notice urgency",
+            "weight": 20,
+            "appliedWeight": 20,
+            "raw": 0,
+            "points": 0,
+            "detail": "Notice due in 1945 days"
+          },
+          {
+            "key": "concentration",
+            "label": "Tenant concentration",
+            "weight": 25,
+            "appliedWeight": 25,
+            "raw": 13.460004098342788,
+            "points": 3.365001024585697,
+            "detail": "3.4% of in-place rent"
+          },
+          {
+            "key": "loan_mismatch",
+            "label": "Expires before loan maturity",
+            "weight": 15,
+            "appliedWeight": 15,
+            "raw": 0,
+            "points": 0,
+            "detail": "Runs past loan maturity"
+          }
+        ],
+        "leftOut": []
+      }
+    },
+    {
+      "id": "de82c11b-3ca3-4567-ba30-cf5a343a0c7a",
+      "sourceRow": 4,
+      "suite": "130",
+      "tenantName": "Ferris Wheel Studios Inc.",
+      "status": "occupied",
+      "areaSf": 8600,
+      "annualRentCents": 24148800,
+      "commencementDate": "2022-12-01",
+      "expirationDate": "2030-05-31",
+      "isMonthToMonth": false,
+      "noticeMonths": 9,
+      "rentSteps": [{ "date": "2026-07-01", "annualRentCents": 24873264 }],
+      "remainingYears": 3.575633127994524,
+      "noticeDate": "2029-08-31",
+      "expiresBeforeLoanMaturity": false,
+      "markToMarketPct": 0.28205128205128205,
+      "risk": {
+        "scored": true,
+        "score": 23.0176102358312,
+        "components": [
+          {
+            "key": "time_to_expiry",
+            "label": "Time to expiry",
+            "weight": 40,
+            "appliedWeight": 40,
+            "raw": 35.6091718001369,
+            "points": 14.243668720054758,
+            "detail": "42.9 months remaining"
+          },
+          {
+            "key": "notice_urgency",
+            "label": "Notice urgency",
+            "weight": 20,
+            "appliedWeight": 20,
+            "raw": 0,
+            "points": 0,
+            "detail": "Notice due in 1033 days"
+          },
+          {
+            "key": "concentration",
+            "label": "Tenant concentration",
+            "weight": 25,
+            "appliedWeight": 25,
+            "raw": 35.095766063105756,
+            "points": 8.773941515776439,
+            "detail": "8.8% of in-place rent"
+          },
+          {
+            "key": "loan_mismatch",
+            "label": "Expires before loan maturity",
+            "weight": 15,
+            "appliedWeight": 15,
+            "raw": 0,
+            "points": 0,
+            "detail": "Runs past loan maturity"
+          }
+        ],
+        "leftOut": []
+      }
+    },
+    {
+      "id": "b0f7f9df-9a6d-4ee5-8525-222c978c5e8b",
+      "sourceRow": 5,
+      "suite": "140",
+      "tenantName": "Greenville Avenue Dental",
+      "status": "occupied",
+      "areaSf": 7600,
+      "annualRentCents": 23985600,
+      "commencementDate": "2021-06-01",
+      "expirationDate": "2030-08-31",
+      "isMonthToMonth": false,
+      "noticeMonths": null,
+      "rentSteps": [],
+      "remainingYears": 3.8275154004106775,
+      "noticeDate": null,
+      "expiresBeforeLoanMaturity": false,
+      "markToMarketPct": 0.14068441064638784,
+      "risk": {
+        "scored": true,
+        "score": 25.549365424287835,
+        "components": [
+          {
+            "key": "time_to_expiry",
+            "label": "Time to expiry",
+            "weight": 40,
+            "appliedWeight": 50,
+            "raw": 29.312114989733058,
+            "points": 14.656057494866529,
+            "detail": "45.9 months remaining"
+          },
+          {
+            "key": "concentration",
+            "label": "Tenant concentration",
+            "weight": 25,
+            "appliedWeight": 31.25,
+            "raw": 34.85858537414818,
+            "points": 10.893307929421304,
+            "detail": "8.7% of in-place rent"
+          },
+          {
+            "key": "loan_mismatch",
+            "label": "Expires before loan maturity",
+            "weight": 15,
+            "appliedWeight": 18.75,
+            "raw": 0,
+            "points": 0,
+            "detail": "Runs past loan maturity"
+          }
+        ],
+        "leftOut": [
+          { "key": "notice_urgency", "label": "Notice urgency", "reason": "No valid notice term recorded." }
+        ]
+      }
+    },
+    {
+      "id": "8a44163e-e060-4795-8db6-bf19fab4af99",
+      "sourceRow": 6,
+      "suite": "150",
+      "tenantName": "Harwood Data Systems",
+      "status": "occupied",
+      "areaSf": 1800,
+      "annualRentCents": 5464800,
+      "commencementDate": "2019-10-01",
+      "expirationDate": "2028-01-31",
+      "isMonthToMonth": false,
+      "noticeMonths": 6,
+      "rentSteps": [],
+      "remainingYears": 1.2457221081451062,
+      "noticeDate": "2027-07-31",
+      "expiresBeforeLoanMaturity": true,
+      "markToMarketPct": 0.1857707509881423,
+      "risk": {
+        "scored": true,
+        "score": 61.364658837105274,
+        "components": [
+          {
+            "key": "time_to_expiry",
+            "label": "Time to expiry",
+            "weight": 40,
+            "appliedWeight": 40,
+            "raw": 93.85694729637235,
+            "points": 37.54277891854894,
+            "detail": "14.9 months remaining"
+          },
+          {
+            "key": "notice_urgency",
+            "label": "Notice urgency",
+            "weight": 20,
+            "appliedWeight": 20,
+            "raw": 34.18181818181818,
+            "points": 6.836363636363636,
+            "detail": "Notice due in 271 days"
+          },
+          {
+            "key": "concentration",
+            "label": "Tenant concentration",
+            "weight": 25,
+            "appliedWeight": 25,
+            "raw": 7.9420651287708015,
+            "points": 1.9855162821927004,
+            "detail": "2.0% of in-place rent"
+          },
+          {
+            "key": "loan_mismatch",
+            "label": "Expires before loan maturity",
+            "weight": 15,
+            "appliedWeight": 15,
+            "raw": 100,
+            "points": 15,
+            "detail": "Expires before the 2028-06-30 maturity"
+          }
+        ],
+        "leftOut": []
+      }
+    },
+    {
+      "id": "2ead6031-500f-49d2-8a6e-dbeb8893f288",
+      "sourceRow": 7,
+      "suite": "160",
+      "tenantName": "Katy Trail Advisors",
+      "status": "occupied",
+      "areaSf": 1800,
+      "annualRentCents": 5076000,
+      "commencementDate": "2023-02-01",
+      "expirationDate": null,
+      "isMonthToMonth": true,
+      "noticeMonths": null,
+      "rentSteps": [],
+      "remainingYears": 0,
+      "noticeDate": null,
+      "expiresBeforeLoanMaturity": true,
+      "markToMarketPct": 0.2765957446808511,
+      "risk": {
+        "scored": true,
+        "score": 71.05531781776327,
+        "components": [
+          {
+            "key": "time_to_expiry",
+            "label": "Time to expiry",
+            "weight": 40,
+            "appliedWeight": 50,
+            "raw": 100,
+            "points": 50,
+            "detail": "Month-to-month"
+          },
+          {
+            "key": "concentration",
+            "label": "Tenant concentration",
+            "weight": 25,
+            "appliedWeight": 31.25,
+            "raw": 7.377017016842445,
+            "points": 2.305317817763264,
+            "detail": "1.8% of in-place rent"
+          },
+          {
+            "key": "loan_mismatch",
+            "label": "Expires before loan maturity",
+            "weight": 15,
+            "appliedWeight": 18.75,
+            "raw": 100,
+            "points": 18.75,
+            "detail": "Month-to-month: no committed term past the 2028-06-30 maturity"
+          }
+        ],
+        "leftOut": [
+          { "key": "notice_urgency", "label": "Notice urgency", "reason": "Month-to-month: no notice date." }
+        ]
+      }
+    },
+    {
+      "id": "fe1d4a19-92d7-4bba-98f7-a1a6643eb4da",
+      "sourceRow": 8,
+      "suite": "210",
+      "tenantName": "Lakewood Title Co.",
+      "status": "occupied",
+      "areaSf": 3200,
+      "annualRentCents": 8678400,
+      "commencementDate": "2023-11-01",
+      "expirationDate": "2031-12-31",
+      "isMonthToMonth": false,
+      "noticeMonths": 12,
+      "rentSteps": [],
+      "remainingYears": 5.160848733744011,
+      "noticeDate": "2030-12-31",
+      "expiresBeforeLoanMaturity": false,
+      "markToMarketPct": 0.3274336283185841,
+      "risk": {
+        "scored": true,
+        "score": 3.153107982612563,
+        "components": [
+          {
+            "key": "time_to_expiry",
+            "label": "Time to expiry",
+            "weight": 40,
+            "appliedWeight": 40,
+            "raw": 0,
+            "points": 0,
+            "detail": "61.9 months remaining"
+          },
+          {
+            "key": "notice_urgency",
+            "label": "Notice urgency",
+            "weight": 20,
+            "appliedWeight": 20,
+            "raw": 0,
+            "points": 0,
+            "detail": "Notice due in 1520 days"
+          },
+          {
+            "key": "concentration",
+            "label": "Tenant concentration",
+            "weight": 25,
+            "appliedWeight": 25,
+            "raw": 12.612431930450253,
+            "points": 3.153107982612563,
+            "detail": "3.2% of in-place rent"
+          },
+          {
+            "key": "loan_mismatch",
+            "label": "Expires before loan maturity",
+            "weight": 15,
+            "appliedWeight": 15,
+            "raw": 0,
+            "points": 0,
+            "detail": "Runs past loan maturity"
+          }
+        ],
+        "leftOut": []
+      }
+    },
+    {
+      "id": "59a5c13e-edb1-4b6d-8b98-5e0c7747a5d3",
+      "sourceRow": 9,
+      "suite": "220",
+      "tenantName": "Mesquite Logistics LLC",
+      "status": "occupied",
+      "areaSf": 4600,
+      "annualRentCents": 16891200,
+      "commencementDate": "2018-12-01",
+      "expirationDate": "2033-10-31",
+      "isMonthToMonth": false,
+      "noticeMonths": 9,
+      "rentSteps": [],
+      "remainingYears": 6.995208761122519,
+      "noticeDate": "2033-01-31",
+      "expiresBeforeLoanMaturity": false,
+      "markToMarketPct": -0.0196078431372549,
+      "risk": {
+        "scored": true,
+        "score": 11.28875440898845,
+        "components": [
+          {
+            "key": "time_to_expiry",
+            "label": "Time to expiry",
+            "weight": 40,
+            "appliedWeight": 40,
+            "raw": 0,
+            "points": 0,
+            "detail": "83.9 months remaining"
+          },
+          {
+            "key": "notice_urgency",
+            "label": "Notice urgency",
+            "weight": 20,
+            "appliedWeight": 20,
+            "raw": 0,
+            "points": 0,
+            "detail": "Notice due in 2282 days"
+          },
+          {
+            "key": "concentration",
+            "label": "Tenant concentration",
+            "weight": 25,
+            "appliedWeight": 25,
+            "raw": 45.155017635953804,
+            "points": 11.28875440898845,
+            "detail": "11.3% of in-place rent"
+          },
+          {
+            "key": "loan_mismatch",
+            "label": "Expires before loan maturity",
+            "weight": 15,
+            "appliedWeight": 15,
+            "raw": 0,
+            "points": 0,
+            "detail": "Runs past loan maturity"
+          }
+        ],
+        "leftOut": []
+      }
+    },
+    {
+      "id": "060a7c1b-aecb-4aa0-a020-5470d5f40431",
+      "sourceRow": 10,
+      "suite": "230",
+      "tenantName": "Northpark Staffing Group",
+      "status": "occupied",
+      "areaSf": 3600,
+      "annualRentCents": 14472000,
+      "commencementDate": "2017-09-01",
+      "expirationDate": "2028-06-30",
+      "isMonthToMonth": false,
+      "noticeMonths": 9,
+      "rentSteps": [{ "date": "2026-07-01", "annualRentCents": 14906160 }],
+      "remainingYears": 1.6591375770020533,
+      "noticeDate": "2027-09-30",
+      "expiresBeforeLoanMaturity": false,
+      "markToMarketPct": -0.1044776119402985,
+      "risk": {
+        "scored": true,
+        "score": 41.06671082709057,
+        "components": [
+          {
+            "key": "time_to_expiry",
+            "label": "Time to expiry",
+            "weight": 40,
+            "appliedWeight": 40,
+            "raw": 83.52156057494867,
+            "points": 33.408624229979466,
+            "detail": "19.9 months remaining"
+          },
+          {
+            "key": "notice_urgency",
+            "label": "Notice urgency",
+            "weight": 20,
+            "appliedWeight": 20,
+            "raw": 12,
+            "points": 2.4,
+            "detail": "Notice due in 332 days"
+          },
+          {
+            "key": "concentration",
+            "label": "Tenant concentration",
+            "weight": 25,
+            "appliedWeight": 25,
+            "raw": 21.032346388444417,
+            "points": 5.258086597111104,
+            "detail": "5.3% of in-place rent"
+          },
+          {
+            "key": "loan_mismatch",
+            "label": "Expires before loan maturity",
+            "weight": 15,
+            "appliedWeight": 15,
+            "raw": 0,
+            "points": 0,
+            "detail": "Runs past loan maturity"
+          }
+        ],
+        "leftOut": []
+      }
+    },
+    {
+      "id": "5dee1607-e88a-4566-ac16-b959911df28a",
+      "sourceRow": 11,
+      "suite": "240",
+      "tenantName": "Oak Lawn Architects",
+      "status": "occupied",
+      "areaSf": 3900,
+      "annualRentCents": 15631200,
+      "commencementDate": "2019-02-01",
+      "expirationDate": "2031-08-31",
+      "isMonthToMonth": false,
+      "noticeMonths": null,
+      "rentSteps": [],
+      "remainingYears": 4.826830937713894,
+      "noticeDate": null,
+      "expiresBeforeLoanMaturity": false,
+      "markToMarketPct": -0.10179640718562874,
+      "risk": {
+        "scored": true,
+        "score": 9.263684175546597,
+        "components": [
+          {
+            "key": "time_to_expiry",
+            "label": "Time to expiry",
+            "weight": 40,
+            "appliedWeight": 50,
+            "raw": 4.329226557152635,
+            "points": 2.1646132785763177,
+            "detail": "57.9 months remaining"
+          },
+          {
+            "key": "concentration",
+            "label": "Tenant concentration",
+            "weight": 25,
+            "appliedWeight": 31.25,
+            "raw": 22.717026870304892,
+            "points": 7.099070896970279,
+            "detail": "5.7% of in-place rent"
+          },
+          {
+            "key": "loan_mismatch",
+            "label": "Expires before loan maturity",
+            "weight": 15,
+            "appliedWeight": 18.75,
+            "raw": 0,
+            "points": 0,
+            "detail": "Runs past loan maturity"
+          }
+        ],
+        "leftOut": [
+          { "key": "notice_urgency", "label": "Notice urgency", "reason": "No valid notice term recorded." }
+        ]
+      }
+    },
+    {
+      "id": "62de2bae-f71b-43a5-af21-62a6d2f6caf6",
+      "sourceRow": 12,
+      "suite": "250",
+      "tenantName": "Pecan Valley Foods",
+      "status": "occupied",
+      "areaSf": 6700,
+      "annualRentCents": 24280800,
+      "commencementDate": "2019-11-01",
+      "expirationDate": "2032-08-31",
+      "isMonthToMonth": false,
+      "noticeMonths": 12,
+      "rentSteps": [],
+      "remainingYears": 5.8288843258042435,
+      "noticeDate": "2031-08-31",
+      "expiresBeforeLoanMaturity": false,
+      "markToMarketPct": -0.006622516556291391,
+      "risk": {
+        "scored": true,
+        "score": 8.821900846264185,
+        "components": [
+          {
+            "key": "time_to_expiry",
+            "label": "Time to expiry",
+            "weight": 40,
+            "appliedWeight": 40,
+            "raw": 0,
+            "points": 0,
+            "detail": "69.9 months remaining"
+          },
+          {
+            "key": "notice_urgency",
+            "label": "Notice urgency",
+            "weight": 20,
+            "appliedWeight": 20,
+            "raw": 0,
+            "points": 0,
+            "detail": "Notice due in 1763 days"
+          },
+          {
+            "key": "concentration",
+            "label": "Tenant concentration",
+            "weight": 25,
+            "appliedWeight": 25,
+            "raw": 35.28760338505674,
+            "points": 8.821900846264185,
+            "detail": "8.8% of in-place rent"
+          },
+          {
+            "key": "loan_mismatch",
+            "label": "Expires before loan maturity",
+            "weight": 15,
+            "appliedWeight": 15,
+            "raw": 0,
+            "points": 0,
+            "detail": "Runs past loan maturity"
+          }
+        ],
+        "leftOut": []
+      }
+    },
+    {
+      "id": "6149de8f-0312-4446-9e16-7cb3f6564a84",
+      "sourceRow": 13,
+      "suite": "260",
+      "tenantName": null,
+      "status": "vacant",
+      "areaSf": 2900,
+      "annualRentCents": null,
+      "commencementDate": null,
+      "expirationDate": null,
+      "isMonthToMonth": false,
+      "noticeMonths": null,
+      "rentSteps": [],
+      "remainingYears": null,
+      "noticeDate": null,
+      "expiresBeforeLoanMaturity": null,
+      "markToMarketPct": null,
+      "risk": { "scored": false, "reasons": ["Vacant suite: no lease to score."] }
+    },
+    {
+      "id": "863f1136-c53f-4aa1-885b-59913bb03d0d",
+      "sourceRow": 14,
+      "suite": "310",
+      "tenantName": "Riverfront Engineering",
+      "status": "occupied",
+      "areaSf": 8100,
+      "annualRentCents": 22939200,
+      "commencementDate": "2018-12-01",
+      "expirationDate": "2033-11-30",
+      "isMonthToMonth": false,
+      "noticeMonths": 6,
+      "rentSteps": [],
+      "remainingYears": 7.077344284736482,
+      "noticeDate": "2033-05-30",
+      "expiresBeforeLoanMaturity": false,
+      "markToMarketPct": 0.2711864406779661,
+      "risk": {
+        "scored": true,
+        "score": 8.334459650943273,
+        "components": [
+          {
+            "key": "time_to_expiry",
+            "label": "Time to expiry",
+            "weight": 40,
+            "appliedWeight": 40,
+            "raw": 0,
+            "points": 0,
+            "detail": "84.9 months remaining"
+          },
+          {
+            "key": "notice_urgency",
+            "label": "Notice urgency",
+            "weight": 20,
+            "appliedWeight": 20,
+            "raw": 0,
+            "points": 0,
+            "detail": "Notice due in 2401 days"
+          },
+          {
+            "key": "concentration",
+            "label": "Tenant concentration",
+            "weight": 25,
+            "appliedWeight": 25,
+            "raw": 33.33783860377309,
+            "points": 8.334459650943273,
+            "detail": "8.3% of in-place rent"
+          },
+          {
+            "key": "loan_mismatch",
+            "label": "Expires before loan maturity",
+            "weight": 15,
+            "appliedWeight": 15,
+            "raw": 0,
+            "points": 0,
+            "detail": "Runs past loan maturity"
+          }
+        ],
+        "leftOut": []
+      }
+    },
+    {
+      "id": "be121d57-10f3-44da-a5c2-ba1d231f3feb",
+      "sourceRow": 15,
+      "suite": "320",
+      "tenantName": "Stemmons Freight Inc.",
+      "status": "occupied",
+      "areaSf": 6500,
+      "annualRentCents": 15912000,
+      "commencementDate": "2022-12-01",
+      "expirationDate": "2032-12-31",
+      "isMonthToMonth": false,
+      "noticeMonths": 9,
+      "rentSteps": [],
+      "remainingYears": 6.16290212183436,
+      "noticeDate": "2032-03-31",
+      "expiresBeforeLoanMaturity": false,
+      "markToMarketPct": 0.47058823529411764,
+      "risk": {
+        "scored": true,
+        "score": 5.781279293341065,
+        "components": [
+          {
+            "key": "time_to_expiry",
+            "label": "Time to expiry",
+            "weight": 40,
+            "appliedWeight": 40,
+            "raw": 0,
+            "points": 0,
+            "detail": "74.0 months remaining"
+          },
+          {
+            "key": "notice_urgency",
+            "label": "Notice urgency",
+            "weight": 20,
+            "appliedWeight": 20,
+            "raw": 0,
+            "points": 0,
+            "detail": "Notice due in 1976 days"
+          },
+          {
+            "key": "concentration",
+            "label": "Tenant concentration",
+            "weight": 25,
+            "appliedWeight": 25,
+            "raw": 23.12511717336426,
+            "points": 5.781279293341065,
+            "detail": "5.8% of in-place rent"
+          },
+          {
+            "key": "loan_mismatch",
+            "label": "Expires before loan maturity",
+            "weight": 15,
+            "appliedWeight": 15,
+            "raw": 0,
+            "points": 0,
+            "detail": "Runs past loan maturity"
+          }
+        ],
+        "leftOut": []
+      }
+    },
+    {
+      "id": "044a4801-cd0f-4dbd-a2c4-3d0fd7ac5e7b",
+      "sourceRow": 16,
+      "suite": "330",
+      "tenantName": "Turtle Creek Capital",
+      "status": "occupied",
+      "areaSf": 8100,
+      "annualRentCents": 32756400,
+      "commencementDate": "2023-12-01",
+      "expirationDate": "2027-03-31",
+      "isMonthToMonth": false,
+      "noticeMonths": 9,
+      "rentSteps": [{ "date": "2026-07-01", "annualRentCents": 33739092 }],
+      "remainingYears": 0.4079397672826831,
+      "noticeDate": "2026-06-30",
+      "expiresBeforeLoanMaturity": true,
+      "markToMarketPct": -0.10979228486646884,
+      "risk": {
+        "scored": true,
+        "score": 86.90132585749103,
+        "components": [
+          {
+            "key": "time_to_expiry",
+            "label": "Time to expiry",
+            "weight": 40,
+            "appliedWeight": 40,
+            "raw": 100,
+            "points": 40,
+            "detail": "4.9 months remaining"
+          },
+          {
+            "key": "notice_urgency",
+            "label": "Notice urgency",
+            "weight": 20,
+            "appliedWeight": 20,
+            "raw": 100,
+            "points": 20,
+            "detail": "Notice date passed 125 days ago"
+          },
+          {
+            "key": "concentration",
+            "label": "Tenant concentration",
+            "weight": 25,
+            "appliedWeight": 25,
+            "raw": 47.60530342996412,
+            "points": 11.90132585749103,
+            "detail": "11.9% of in-place rent"
+          },
+          {
+            "key": "loan_mismatch",
+            "label": "Expires before loan maturity",
+            "weight": 15,
+            "appliedWeight": 15,
+            "raw": 100,
+            "points": 15,
+            "detail": "Expires before the 2028-06-30 maturity"
+          }
+        ],
+        "leftOut": []
+      }
+    },
+    {
+      "id": "f38886d7-73e9-42fd-927d-31caf2f3c32d",
+      "sourceRow": 17,
+      "suite": "340",
+      "tenantName": "Uptown Legal Services",
+      "status": "occupied",
+      "areaSf": 6500,
+      "annualRentCents": 19188000,
+      "commencementDate": "2017-08-01",
+      "expirationDate": "2029-02-28",
+      "isMonthToMonth": false,
+      "noticeMonths": null,
+      "rentSteps": [],
+      "remainingYears": 2.324435318275154,
+      "noticeDate": null,
+      "expiresBeforeLoanMaturity": false,
+      "markToMarketPct": 0.21951219512195122,
+      "risk": {
+        "scored": true,
+        "score": 42.15898686814085,
+        "components": [
+          {
+            "key": "time_to_expiry",
+            "label": "Time to expiry",
+            "weight": 40,
+            "appliedWeight": 50,
+            "raw": 66.88911704312113,
+            "points": 33.444558521560566,
+            "detail": "27.9 months remaining"
+          },
+          {
+            "key": "concentration",
+            "label": "Tenant concentration",
+            "weight": 25,
+            "appliedWeight": 31.25,
+            "raw": 27.886170709056902,
+            "points": 8.714428346580283,
+            "detail": "7.0% of in-place rent"
+          },
+          {
+            "key": "loan_mismatch",
+            "label": "Expires before loan maturity",
+            "weight": 15,
+            "appliedWeight": 18.75,
+            "raw": 0,
+            "points": 0,
+            "detail": "Runs past loan maturity"
+          }
+        ],
+        "leftOut": [
+          { "key": "notice_urgency", "label": "Notice urgency", "reason": "No valid notice term recorded." }
+        ]
+      }
+    },
+    {
+      "id": "9a1e7982-7d98-4cea-80a4-bf2b63a68470",
+      "sourceRow": 18,
+      "suite": "350",
+      "tenantName": "White Rock Insurance",
+      "status": "occupied",
+      "areaSf": 8000,
+      "annualRentCents": 22368000,
+      "commencementDate": "2020-09-01",
+      "expirationDate": null,
+      "isMonthToMonth": true,
+      "noticeMonths": null,
+      "rentSteps": [],
+      "remainingYears": 0,
+      "noticeDate": null,
+      "expiresBeforeLoanMaturity": true,
+      "markToMarketPct": 0.2875536480686695,
+      "risk": {
+        "scored": true,
+        "score": 78.90865818513174,
+        "components": [
+          {
+            "key": "time_to_expiry",
+            "label": "Time to expiry",
+            "weight": 40,
+            "appliedWeight": 50,
+            "raw": 100,
+            "points": 50,
+            "detail": "Month-to-month"
+          },
+          {
+            "key": "concentration",
+            "label": "Tenant concentration",
+            "weight": 25,
+            "appliedWeight": 31.25,
+            "raw": 32.50770619242155,
+            "points": 10.158658185131735,
+            "detail": "8.1% of in-place rent"
+          },
+          {
+            "key": "loan_mismatch",
+            "label": "Expires before loan maturity",
+            "weight": 15,
+            "appliedWeight": 18.75,
+            "raw": 100,
+            "points": 18.75,
+            "detail": "Month-to-month: no committed term past the 2028-06-30 maturity"
+          }
+        ],
+        "leftOut": [
+          { "key": "notice_urgency", "label": "Notice urgency", "reason": "Month-to-month: no notice date." }
+        ]
+      }
+    },
+    {
+      "id": "d0f0b613-8faf-4ef5-ba79-068091a38720",
+      "sourceRow": 19,
+      "suite": "360",
+      "tenantName": null,
+      "status": "vacant",
+      "areaSf": 8800,
+      "annualRentCents": null,
+      "commencementDate": null,
+      "expirationDate": null,
+      "isMonthToMonth": false,
+      "noticeMonths": null,
+      "rentSteps": [],
+      "remainingYears": null,
+      "noticeDate": null,
+      "expiresBeforeLoanMaturity": null,
+      "markToMarketPct": null,
+      "risk": { "scored": false, "reasons": ["Vacant suite: no lease to score."] }
+    }
+  ]
+}

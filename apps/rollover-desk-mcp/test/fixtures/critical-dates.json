@@ -1,0 +1,208 @@
+{
+  "asOf": "2026-11-02",
+  "leases": [
+    {
+      "passed": [],
+      "upcoming": [
+        { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 },
+        { "kind": "notice", "label": "Renewal notice due", "date": "2032-02-28", "daysAway": 1944 },
+        { "kind": "expiration", "label": "Lease expiration", "date": "2033-02-28", "daysAway": 2310 }
+      ],
+      "absent": [],
+      "next": { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 },
+      "leaseId": "bb18c157-5115-4064-a688-a3c3da45c571",
+      "suite": "110",
+      "tenantName": "Mesquite Logistics LLC"
+    },
+    {
+      "passed": [],
+      "upcoming": [
+        { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 },
+        { "kind": "notice", "label": "Renewal notice due", "date": "2032-02-29", "daysAway": 1945 },
+        { "kind": "expiration", "label": "Lease expiration", "date": "2032-11-30", "daysAway": 2220 }
+      ],
+      "absent": [],
+      "next": { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 },
+      "leaseId": "b501e435-285d-42c9-b9df-13fd750b15ef",
+      "suite": "120",
+      "tenantName": "Cedar Elm Partners"
+    },
+    {
+      "passed": [{ "kind": "rent_step", "label": "Rent step", "date": "2026-07-01", "daysAway": -124 }],
+      "upcoming": [
+        { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 },
+        { "kind": "notice", "label": "Renewal notice due", "date": "2029-08-31", "daysAway": 1033 },
+        { "kind": "expiration", "label": "Lease expiration", "date": "2030-05-31", "daysAway": 1306 }
+      ],
+      "absent": [],
+      "next": { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 },
+      "leaseId": "de82c11b-3ca3-4567-ba30-cf5a343a0c7a",
+      "suite": "130",
+      "tenantName": "Ferris Wheel Studios Inc."
+    },
+    {
+      "passed": [],
+      "upcoming": [
+        { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 },
+        { "kind": "expiration", "label": "Lease expiration", "date": "2030-08-31", "daysAway": 1398 }
+      ],
+      "absent": ["notice"],
+      "next": { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 },
+      "leaseId": "b0f7f9df-9a6d-4ee5-8525-222c978c5e8b",
+      "suite": "140",
+      "tenantName": "Greenville Avenue Dental"
+    },
+    {
+      "passed": [],
+      "upcoming": [
+        { "kind": "notice", "label": "Renewal notice due", "date": "2027-07-31", "daysAway": 271 },
+        { "kind": "expiration", "label": "Lease expiration", "date": "2028-01-31", "daysAway": 455 },
+        { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 }
+      ],
+      "absent": [],
+      "next": { "kind": "notice", "label": "Renewal notice due", "date": "2027-07-31", "daysAway": 271 },
+      "leaseId": "8a44163e-e060-4795-8db6-bf19fab4af99",
+      "suite": "150",
+      "tenantName": "Harwood Data Systems"
+    },
+    {
+      "passed": [],
+      "upcoming": [
+        { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 }
+      ],
+      "absent": [],
+      "next": { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 },
+      "leaseId": "2ead6031-500f-49d2-8a6e-dbeb8893f288",
+      "suite": "160",
+      "tenantName": "Katy Trail Advisors"
+    },
+    {
+      "passed": [],
+      "upcoming": [
+        { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 },
+        { "kind": "notice", "label": "Renewal notice due", "date": "2030-12-31", "daysAway": 1520 },
+        { "kind": "expiration", "label": "Lease expiration", "date": "2031-12-31", "daysAway": 1885 }
+      ],
+      "absent": [],
+      "next": { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 },
+      "leaseId": "fe1d4a19-92d7-4bba-98f7-a1a6643eb4da",
+      "suite": "210",
+      "tenantName": "Lakewood Title Co."
+    },
+    {
+      "passed": [],
+      "upcoming": [
+        { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 },
+        { "kind": "notice", "label": "Renewal notice due", "date": "2033-01-31", "daysAway": 2282 },
+        { "kind": "expiration", "label": "Lease expiration", "date": "2033-10-31", "daysAway": 2555 }
+      ],
+      "absent": [],
+      "next": { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 },
+      "leaseId": "59a5c13e-edb1-4b6d-8b98-5e0c7747a5d3",
+      "suite": "220",
+      "tenantName": "Mesquite Logistics LLC"
+    },
+    {
+      "passed": [{ "kind": "rent_step", "label": "Rent step", "date": "2026-07-01", "daysAway": -124 }],
+      "upcoming": [
+        { "kind": "notice", "label": "Renewal notice due", "date": "2027-09-30", "daysAway": 332 },
+        { "kind": "expiration", "label": "Lease expiration", "date": "2028-06-30", "daysAway": 606 },
+        { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 }
+      ],
+      "absent": [],
+      "next": { "kind": "notice", "label": "Renewal notice due", "date": "2027-09-30", "daysAway": 332 },
+      "leaseId": "060a7c1b-aecb-4aa0-a020-5470d5f40431",
+      "suite": "230",
+      "tenantName": "Northpark Staffing Group"
+    },
+    {
+      "passed": [],
+      "upcoming": [
+        { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 },
+        { "kind": "expiration", "label": "Lease expiration", "date": "2031-08-31", "daysAway": 1763 }
+      ],
+      "absent": ["notice"],
+      "next": { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 },
+      "leaseId": "5dee1607-e88a-4566-ac16-b959911df28a",
+      "suite": "240",
+      "tenantName": "Oak Lawn Architects"
+    },
+    {
+      "passed": [],
+      "upcoming": [
+        { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 },
+        { "kind": "notice", "label": "Renewal notice due", "date": "2031-08-31", "daysAway": 1763 },
+        { "kind": "expiration", "label": "Lease expiration", "date": "2032-08-31", "daysAway": 2129 }
+      ],
+      "absent": [],
+      "next": { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 },
+      "leaseId": "62de2bae-f71b-43a5-af21-62a6d2f6caf6",
+      "suite": "250",
+      "tenantName": "Pecan Valley Foods"
+    },
+    {
+      "passed": [],
+      "upcoming": [
+        { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 },
+        { "kind": "notice", "label": "Renewal notice due", "date": "2033-05-30", "daysAway": 2401 },
+        { "kind": "expiration", "label": "Lease expiration", "date": "2033-11-30", "daysAway": 2585 }
+      ],
+      "absent": [],
+      "next": { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 },
+      "leaseId": "863f1136-c53f-4aa1-885b-59913bb03d0d",
+      "suite": "310",
+      "tenantName": "Riverfront Engineering"
+    },
+    {
+      "passed": [],
+      "upcoming": [
+        { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 },
+        { "kind": "notice", "label": "Renewal notice due", "date": "2032-03-31", "daysAway": 1976 },
+        { "kind": "expiration", "label": "Lease expiration", "date": "2032-12-31", "daysAway": 2251 }
+      ],
+      "absent": [],
+      "next": { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 },
+      "leaseId": "be121d57-10f3-44da-a5c2-ba1d231f3feb",
+      "suite": "320",
+      "tenantName": "Stemmons Freight Inc."
+    },
+    {
+      "passed": [
+        { "kind": "rent_step", "label": "Rent step", "date": "2026-07-01", "daysAway": -124 },
+        { "kind": "notice", "label": "Renewal notice due", "date": "2026-06-30", "daysAway": -125 }
+      ],
+      "upcoming": [
+        { "kind": "expiration", "label": "Lease expiration", "date": "2027-03-31", "daysAway": 149 },
+        { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 }
+      ],
+      "absent": [],
+      "next": { "kind": "expiration", "label": "Lease expiration", "date": "2027-03-31", "daysAway": 149 },
+      "leaseId": "044a4801-cd0f-4dbd-a2c4-3d0fd7ac5e7b",
+      "suite": "330",
+      "tenantName": "Turtle Creek Capital"
+    },
+    {
+      "passed": [],
+      "upcoming": [
+        { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 },
+        { "kind": "expiration", "label": "Lease expiration", "date": "2029-02-28", "daysAway": 849 }
+      ],
+      "absent": ["notice"],
+      "next": { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 },
+      "leaseId": "f38886d7-73e9-42fd-927d-31caf2f3c32d",
+      "suite": "340",
+      "tenantName": "Uptown Legal Services"
+    },
+    {
+      "passed": [],
+      "upcoming": [
+        { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 }
+      ],
+      "absent": [],
+      "next": { "kind": "loan_maturity", "label": "Loan maturity", "date": "2028-06-30", "daysAway": 606 },
+      "leaseId": "9a1e7982-7d98-4cea-80a4-bf2b63a68470",
+      "suite": "350",
+      "tenantName": "White Rock Insurance"
+    }
+  ]
+}

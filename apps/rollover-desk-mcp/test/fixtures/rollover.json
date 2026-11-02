@@ -1,0 +1,253 @@
+{
+  "asOf": "2026-11-02",
+  "weights": { "time_to_expiry": 40, "notice_urgency": 20, "concentration": 25, "loan_mismatch": 15 },
+  "walt": {
+    "byArea": { "years": 3.9375707796652355, "includedLeases": 16, "excludedLeases": 0 },
+    "byRent": { "years": 3.826718579008637, "includedLeases": 16, "excludedLeases": 0 }
+  },
+  "schedule": {
+    "mtmOrExpired": {
+      "leases": 2,
+      "areaSf": 9800,
+      "annualRentCents": 27444000,
+      "leasesMissingArea": 0,
+      "leasesMissingRent": 0,
+      "areaShare": 0.11136363636363636,
+      "rentShare": 0.09971180802316,
+      "cumulativeAreaShare": 0.11136363636363636,
+      "cumulativeRentShare": 0.09971180802316
+    },
+    "years": [
+      {
+        "leases": 0,
+        "areaSf": 0,
+        "annualRentCents": 0,
+        "leasesMissingArea": 0,
+        "leasesMissingRent": 0,
+        "areaShare": 0,
+        "rentShare": 0,
+        "cumulativeAreaShare": 0.11136363636363636,
+        "cumulativeRentShare": 0.09971180802316,
+        "year": 2026
+      },
+      {
+        "leases": 1,
+        "areaSf": 8100,
+        "annualRentCents": 32756400,
+        "leasesMissingArea": 0,
+        "leasesMissingRent": 0,
+        "areaShare": 0.09204545454545454,
+        "rentShare": 0.1190132585749103,
+        "cumulativeAreaShare": 0.2034090909090909,
+        "cumulativeRentShare": 0.21872506659807028,
+        "year": 2027
+      },
+      {
+        "leases": 2,
+        "areaSf": 5400,
+        "annualRentCents": 19936800,
+        "leasesMissingArea": 0,
+        "leasesMissingRent": 0,
+        "areaShare": 0.06136363636363636,
+        "rentShare": 0.07243602879303805,
+        "cumulativeAreaShare": 0.26477272727272727,
+        "cumulativeRentShare": 0.29116109539110835,
+        "year": 2028
+      },
+      {
+        "leases": 1,
+        "areaSf": 6500,
+        "annualRentCents": 19188000,
+        "leasesMissingArea": 0,
+        "leasesMissingRent": 0,
+        "areaShare": 0.07386363636363637,
+        "rentShare": 0.06971542677264225,
+        "cumulativeAreaShare": 0.3386363636363636,
+        "cumulativeRentShare": 0.3608765221637506,
+        "year": 2029
+      },
+      {
+        "leases": 2,
+        "areaSf": 16200,
+        "annualRentCents": 48134400,
+        "leasesMissingArea": 0,
+        "leasesMissingRent": 0,
+        "areaShare": 0.18409090909090908,
+        "rentShare": 0.17488587859313484,
+        "cumulativeAreaShare": 0.5227272727272727,
+        "cumulativeRentShare": 0.5357624007568854,
+        "year": 2030
+      },
+      {
+        "leases": 2,
+        "areaSf": 7100,
+        "annualRentCents": 24309600,
+        "leasesMissingArea": 0,
+        "leasesMissingRent": 0,
+        "areaShare": 0.08068181818181819,
+        "rentShare": 0.08832364700188786,
+        "cumulativeAreaShare": 0.6034090909090909,
+        "cumulativeRentShare": 0.6240860477587733,
+        "year": 2031
+      },
+      {
+        "leases": 3,
+        "areaSf": 16600,
+        "annualRentCents": 49454400,
+        "leasesMissingArea": 0,
+        "leasesMissingRent": 0,
+        "areaShare": 0.18863636363636363,
+        "rentShare": 0.17968181164190947,
+        "cumulativeAreaShare": 0.7920454545454545,
+        "cumulativeRentShare": 0.8037678594006827,
+        "year": 2032
+      },
+      {
+        "leases": 3,
+        "areaSf": 18300,
+        "annualRentCents": 54009600,
+        "leasesMissingArea": 0,
+        "leasesMissingRent": 0,
+        "areaShare": 0.20795454545454545,
+        "rentShare": 0.19623214059931723,
+        "cumulativeAreaShare": 1,
+        "cumulativeRentShare": 1,
+        "year": 2033
+      }
+    ],
+    "beyondHorizon": {
+      "leases": 0,
+      "areaSf": 0,
+      "annualRentCents": 0,
+      "leasesMissingArea": 0,
+      "leasesMissingRent": 0,
+      "areaShare": 0,
+      "rentShare": 0,
+      "cumulativeAreaShare": 1,
+      "cumulativeRentShare": 1
+    },
+    "unknownExpiration": { "leases": 0, "areaSf": 0, "annualRentCents": 0 },
+    "totals": { "leases": 16, "areaSf": 88000, "annualRentCents": 275233200 },
+    "leasesMissingArea": 0,
+    "leasesMissingRent": 0
+  },
+  "concentration": {
+    "tenants": [
+      {
+        "key": "turtle creek capital",
+        "tenant": "Turtle Creek Capital",
+        "annualRentCents": 32756400,
+        "share": 0.1190132585749103,
+        "suites": 1
+      },
+      {
+        "key": "mesquite logistics",
+        "tenant": "Mesquite Logistics LLC",
+        "annualRentCents": 31070400,
+        "share": 0.11288754408988451,
+        "suites": 2
+      },
+      {
+        "key": "pecan valley foods",
+        "tenant": "Pecan Valley Foods",
+        "annualRentCents": 24280800,
+        "share": 0.08821900846264186,
+        "suites": 1
+      },
+      {
+        "key": "ferris wheel studios",
+        "tenant": "Ferris Wheel Studios Inc.",
+        "annualRentCents": 24148800,
+        "share": 0.0877394151577644,
+        "suites": 1
+      },
+      {
+        "key": "greenville avenue dental",
+        "tenant": "Greenville Avenue Dental",
+        "annualRentCents": 23985600,
+        "share": 0.08714646343537044,
+        "suites": 1
+      },
+      {
+        "key": "riverfront engineering",
+        "tenant": "Riverfront Engineering",
+        "annualRentCents": 22939200,
+        "share": 0.08334459650943273,
+        "suites": 1
+      },
+      {
+        "key": "white rock insurance",
+        "tenant": "White Rock Insurance",
+        "annualRentCents": 22368000,
+        "share": 0.08126926548105388,
+        "suites": 1
+      },
+      {
+        "key": "uptown legal services",
+        "tenant": "Uptown Legal Services",
+        "annualRentCents": 19188000,
+        "share": 0.06971542677264225,
+        "suites": 1
+      },
+      {
+        "key": "stemmons freight",
+        "tenant": "Stemmons Freight Inc.",
+        "annualRentCents": 15912000,
+        "share": 0.05781279293341065,
+        "suites": 1
+      },
+      {
+        "key": "oak lawn architects",
+        "tenant": "Oak Lawn Architects",
+        "annualRentCents": 15631200,
+        "share": 0.056792567175762226,
+        "suites": 1
+      },
+      {
+        "key": "northpark staffing group",
+        "tenant": "Northpark Staffing Group",
+        "annualRentCents": 14472000,
+        "share": 0.05258086597111104,
+        "suites": 1
+      },
+      {
+        "key": "cedar elm partners",
+        "tenant": "Cedar Elm Partners",
+        "annualRentCents": 9261600,
+        "share": 0.03365001024585697,
+        "suites": 1
+      },
+      {
+        "key": "lakewood title",
+        "tenant": "Lakewood Title Co.",
+        "annualRentCents": 8678400,
+        "share": 0.03153107982612563,
+        "suites": 1
+      },
+      {
+        "key": "harwood data systems",
+        "tenant": "Harwood Data Systems",
+        "annualRentCents": 5464800,
+        "share": 0.019855162821927005,
+        "suites": 1
+      },
+      {
+        "key": "katy trail advisors",
+        "tenant": "Katy Trail Advisors",
+        "annualRentCents": 5076000,
+        "share": 0.018442542542106113,
+        "suites": 1
+      }
+    ],
+    "leasesMissingRent": 0,
+    "leasesMissingName": 0
+  },
+  "largestTenant": { "tenant": "Turtle Creek Capital", "expiresFirst": true },
+  "projectedVacating": {
+    "leases": 0,
+    "areaSf": 0,
+    "annualRentCents": 0,
+    "leasesMissingArea": 0,
+    "leasesMissingRent": 0
+  }
+}

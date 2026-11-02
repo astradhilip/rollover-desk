@@ -1,0 +1,56 @@
+{
+  "asOf": "2026-11-02",
+  "items": [
+    {
+      "key": "notice_passed.3bbb7157.2026-06-30",
+      "kind": "notice_passed",
+      "severity": "high",
+      "suite": "330",
+      "leaseId": "044a4801-cd0f-4dbd-a2c4-3d0fd7ac5e7b",
+      "tenantName": "Turtle Creek Capital",
+      "message": "Renewal notice date passed 125 days ago with no renewal activity.",
+      "daysAway": -125
+    },
+    {
+      "key": "largest_tenant_expires_first.6e15e52b.2028-06-30",
+      "kind": "largest_tenant_expires_first",
+      "severity": "high",
+      "suite": null,
+      "leaseId": null,
+      "tenantName": "Turtle Creek Capital",
+      "message": "Largest tenant Turtle Creek Capital has a lease ending before the 2028-06-30 loan maturity.",
+      "daysAway": null
+    },
+    {
+      "key": "month_to_month.39311961.mtm",
+      "kind": "month_to_month",
+      "severity": "medium",
+      "suite": "350",
+      "leaseId": "9a1e7982-7d98-4cea-80a4-bf2b63a68470",
+      "tenantName": "White Rock Insurance",
+      "message": "Month-to-month: the tenant can leave on short notice.",
+      "daysAway": 0
+    },
+    {
+      "key": "month_to_month.ede10786.mtm",
+      "kind": "month_to_month",
+      "severity": "medium",
+      "suite": "160",
+      "leaseId": "2ead6031-500f-49d2-8a6e-dbeb8893f288",
+      "tenantName": "Katy Trail Advisors",
+      "message": "Month-to-month: the tenant can leave on short notice.",
+      "daysAway": 0
+    },
+    {
+      "key": "no_renewal_activity.3bbb7157.2027-03-31",
+      "kind": "no_renewal_activity",
+      "severity": "medium",
+      "suite": "330",
+      "leaseId": "044a4801-cd0f-4dbd-a2c4-3d0fd7ac5e7b",
+      "tenantName": "Turtle Creek Capital",
+      "message": "Expires in 149 days and nobody has started a renewal.",
+      "daysAway": 149
+    }
+  ],
+  "handled": []
+}
