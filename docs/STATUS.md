@@ -5,9 +5,9 @@ Update at every milestone, so a fresh session can resume from here.
 | Milestone              | Branch                                | State     |
 | ---------------------- | ------------------------------------- | --------- |
 | M0 Repo and harness    | `feature/m0-repo-harness`             | Merged    |
-| M1 Domain engine       | `feature/m1-domain-engine`            | In review |
-| M2 Rent-roll intake    | `feature/m2-rent-roll-intake`         | Next      |
-| M3a API, auth, tenancy | `feature/m3a-api-auth-tenancy`        |           |
+| M1 Domain engine       | `feature/m1-domain-engine`            | Merged    |
+| M2 Rent-roll intake    | `feature/m2-rent-roll-intake`         | In review |
+| M3a API, auth, tenancy | `feature/m3a-api-auth-tenancy`        | Next      |
 | M3b API features       | `feature/m3b-api-rollover-features`   |           |
 | M4a Design system      | `feature/m4a-dashboard-design-system` |           |
 | M4b Screens            | `feature/m4b-dashboard-screens`       |           |
@@ -27,7 +27,8 @@ Update at every milestone, so a fresh session can resume from here.
 
 - The Stop hook has not yet been seen to fail on a real test failure in a working session.
 
-## Carried into M2
+## Carried into M3
 
-- A malformed date throws `RangeError` in the domain, so intake must reject or flag it before a lease reaches the domain.
+- Security review of the reader runs with the upload route in M3b. The upload size cap must apply before `SpreadsheetReader` unzips a workbook, because its row and column limits only apply after loading.
+- The upload use case must surface `chooseSheet`'s `others` and `tied` as issues.
 - `Property` holds one market rent per property, not per property type.

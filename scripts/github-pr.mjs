@@ -102,8 +102,11 @@ async function main() {
       commit_title: `Merge: ${title}`,
     });
     console.log(`Merged ${merged.sha.slice(0, 8)}`);
+  } else if (cmd === 'close') {
+    const pr = await api('PATCH', `/pulls/${arg}`, { state: 'closed' });
+    console.log(`Closed #${pr.number}`);
   } else {
-    throw new Error('Usage: github-pr.mjs open|wait|merge');
+    throw new Error('Usage: github-pr.mjs open|wait|merge|close');
   }
 }
 
