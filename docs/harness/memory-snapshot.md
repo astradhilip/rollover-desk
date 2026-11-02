@@ -1,6 +1,6 @@
 # Memory snapshot
 
-Claude Code's project memory sits outside git. This is a scrubbed copy at M0.
+Claude Code's project memory sits outside git. This is a scrubbed copy, first taken at M0 and checked again at M6, when it was still accurate.
 
 **Assignment:** second-round take-home for Newmark, Dallas TX: staff software engineer at a commercial real estate company, self-chosen problem. Prompts and commit history are kept for a harness conversation. The brief's due date is contradictory: the header says 11/01/26, the body says Oct 13.
 
