@@ -1,0 +1,38 @@
+{
+  "name": "rollover-desk",
+  "private": true,
+  "packageManager": "pnpm@10.34.9",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "check": "turbo run lint typecheck test build",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test:hooks": "node --test .claude/hooks/*.test.mjs scripts/*.test.mjs",
+    "leak-scan": "node scripts/leak-scan.mjs",
+    "pr": "node scripts/github-pr.mjs"
+  },
+  "devDependencies": {
+    "@rollover-desk/config": "workspace:*",
+    "eslint": "^9.39.5",
+    "prettier": "3.6.2",
+    "turbo": "2.5.8",
+    "typescript": "5.9.3",
+    "typescript-eslint": "^8.46.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3",
+      "esbuild",
+      "sharp",
+      "unrs-resolver",
+      "@tailwindcss/oxide"
+    ]
+  }
+}
