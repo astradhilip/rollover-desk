@@ -1,6 +1,6 @@
 # Claude Code harness
 
-How the AI tooling was set up, and why. The final version is completed at M6.
+How the AI tooling was set up, and why. Every milestone was built by Claude Code inside this harness, one reviewed pull request each. The prompts are in [harness/prompt-log.md](harness/prompt-log.md), and the commit history is the other half of the record.
 
 | Item                                                    | Use                                                                                          | Why                                                                     |
 | ------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
@@ -14,10 +14,33 @@ How the AI tooling was set up, and why. The final version is completed at M6.
 | Skill `cre-formulas`                                    | Definitions and worked examples                                                              | Loaded only when formulas are in play                                   |
 | Skills `impeccable`, `ui-ux-pro-max`, `frontend-design` | Design guidance and detector                                                                 | Third-party, unmodified, licences kept                                  |
 | Agent `cre-domain-reviewer`                             | Read-only recalculation of formulas                                                          | Independent of the code's own output                                    |
+| Built-in `/code-review` and `/security-review`          | Run at the gate on each milestone's diff                                                     | A second reader that hasn't seen the reasoning behind the code          |
+| impeccable `audit` and `polish`                         | Screenshot review of every screen at three widths, both themes                               | The design skills check the result, not just guide the writing          |
 | `scripts/leak-scan.mjs`                                 | Scans files and full history                                                                 | Private material must not reach the repo, even in a deleted line        |
 | `scripts/github-pr.mjs`                                 | PRs through the API                                                                          | The token stays in git's credential helper                              |
 | Memory                                                  | Assignment facts and working rules                                                           | Outside git, so a scrubbed copy is in `harness/memory-snapshot.md`      |
 | Context window                                          | `STATUS.md` is the resume point; formulas load on demand                                     | A new session can resume cheaply                                        |
+
+## What the loop caught
+
+The reviews found real defects, not just style:
+
+- **M4a (security):** the dashboard's login limiter could be bypassed by spoofing `X-Forwarded-For` when no proxy sets it. Fixed, and the proxy requirement is in `STATUS.md`.
+- **M3b (code):** parallel confirms that could leave two active rent rolls. Fixed with a partial unique index and a transaction, plus a race test.
+- **M4b (code):** a pipeline note that could never be edited on a "Vacating" card.
+- **M5 (formulas):** four places where the workbook disagreed with the domain, including missing rent shown as $0 and a blank as-of date read as 1899.
+- **M5 (second pass):** the fix for the blank as-of date was itself incomplete. The reviewer was given the code, not my conclusion, and found it.
+
+Each finding I declined is listed in its PR with the reason.
+
+**Reviewer reports are model output.** Each report was checked before acting on it. Two kinds of claim were corrected that way:
+
+- claims that something was "verified" when it had only been read,
+- and suggested fixes that would have broken another rule.
+
+## Handing over between sessions
+
+Work moved between sessions and accounts mid-milestone. `STATUS.md`, the prompt log and project memory were enough to resume: the next session read them, found the review findings not yet applied, and continued from there. No step was repeated.
 
 ## Declined
 

@@ -69,3 +69,12 @@ Measured in a pilot, not by this demo:
 | Critical dates missed on tracked leases                | Zero                                                      |
 
 See [ASSUMPTIONS.md](ASSUMPTIONS.md) for what has not been validated.
+
+## What changed during the build
+
+The problem and the choice held. Four things changed in how it was framed:
+
+- **Auth and tenancy:** they moved from "not needed for a demo" to built. The reason was confidential tenant data, and that an open API would be the first objection. See ADR [0005](adr/0005-auth-and-tenancy.md).
+- **Never impute:** it became a hard rule, not a preference. It decides the most behaviour and was the one review kept finding broken. See ADR [0004](adr/0004-never-impute.md).
+- **The workbook:** it turned out to be the hardest part to get right. Every formula re-implements a domain calculation, so it needed its own recalculation tests. See ADR [0006](adr/0006-live-formula-workbook.md).
+- **A renewal pipeline:** it was added beyond the original core. Expiring leases are where agency leasing acts, and marking one "Vacating" feeds a projected vacating total on the Desk.
