@@ -196,6 +196,18 @@ export class RentRollRepository implements IRentRollRepository {
   }
 
   async activeLeases(organizationId: string, propertyId: string): Promise<ParsedLease[]> {
+    return this.leasesWhere(organizationId, propertyId, { status: 'confirmed' });
+  }
+
+  async importLeases(organizationId: string, propertyId: string, importId: string): Promise<ParsedLease[]> {
+    return this.leasesWhere(organizationId, propertyId, { importId });
+  }
+
+  private async leasesWhere(
+    organizationId: string,
+    propertyId: string,
+    pick: { status: 'confirmed' } | { importId: string },
+  ): Promise<ParsedLease[]> {
     const rows = await this.db
       .selectFrom('leases')
       .innerJoin('rent_roll_imports', 'rent_roll_imports.id', 'leases.import_id')
@@ -203,7 +215,11 @@ export class RentRollRepository implements IRentRollRepository {
       .where('leases.organization_id', '=', organizationId)
       .where('leases.property_id', '=', propertyId)
       .where('rent_roll_imports.organization_id', '=', organizationId)
-      .where('rent_roll_imports.status', '=', 'confirmed')
+      .where(
+        'importId' in pick ? 'rent_roll_imports.id' : 'rent_roll_imports.status',
+        '=',
+        'importId' in pick ? pick.importId : pick.status,
+      )
       .orderBy('leases.source_row')
       .execute();
     return rows.map((r) => ({

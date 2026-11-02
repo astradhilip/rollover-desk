@@ -26,7 +26,8 @@ import {
   SetMappingRequest,
 } from '@rollover-desk/contracts';
 import type { Request, Response } from 'express';
-import type { z } from 'zod';
+import { z } from 'zod';
+import type { ExportWorkbook } from '../../application/use-cases/RentRollImports';
 import type { GetCurrentUser } from '../../application/use-cases/GetCurrentUser';
 import type { Login } from '../../application/use-cases/Login';
 import type { Portfolio } from '../../application/use-cases/Portfolio';
@@ -51,6 +52,7 @@ export interface UseCases {
   importHistory: ImportHistory;
   reviewImport: ReviewImport;
   portfolio: Portfolio;
+  exportWorkbook: ExportWorkbook;
 }
 
 type LeaseField = z.infer<typeof LeaseFieldSchema>;
@@ -75,6 +77,8 @@ export interface Route {
   query?: z.ZodType;
   /** Multipart with one `file` field, read only after access is checked. */
   upload?: boolean;
+  /** Answers with a file: `handle` returns `{ filename, bytes }`, and `response` isn't used. */
+  download?: boolean;
   response: z.ZodType;
   status?: number;
   handle: (context: RouteContext) => Promise<unknown>;
@@ -260,6 +264,15 @@ export function buildRoutes(useCases: UseCases, limiter: LoginRateLimiter): Rout
       summary: 'WALT, rollover by year and concentration',
       response: RolloverView,
       handle: ({ principal, req }) => useCases.portfolio.rollover(principal, pathId(req)),
+    },
+    {
+      method: 'get',
+      path: '/properties/:id/export',
+      access: 'analyst',
+      summary: 'Live-formula Excel workbook of the current rent roll',
+      download: true,
+      response: z.unknown(),
+      handle: async ({ principal, req }) => useCases.exportWorkbook.execute(principal, pathId(req)),
     },
     {
       method: 'get',

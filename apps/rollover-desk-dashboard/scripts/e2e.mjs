@@ -103,6 +103,15 @@ await page.goto(`${BASE}${property}/dates`);
 await page.getByRole('heading', { name: /Missing dates/ }).waitFor();
 step('critical dates');
 
+await page.goto(`${BASE}${property}`);
+const [download] = await Promise.all([
+  page.waitForEvent('download'),
+  page.getByRole('button', { name: 'Download workbook' }).click(),
+]);
+assert.match(download.suggestedFilename(), /^rollover-desk-.*\.xlsx$/);
+assert.equal(await download.failure(), null);
+step('workbook downloaded');
+
 await page.goto(`${BASE}${property}/rent-rolls`);
 await page.getByRole('button', { name: 'Revert' }).click();
 await page.getByRole('button', { name: 'Revert rent roll' }).click();

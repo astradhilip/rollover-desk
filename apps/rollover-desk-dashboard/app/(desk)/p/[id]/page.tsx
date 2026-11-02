@@ -16,6 +16,7 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { AttentionQueue } from '@/components/AttentionQueue';
+import { DownloadWorkbook } from '@/components/DownloadWorkbook';
 import { RolloverChart } from '@/components/RolloverChart';
 import { api, errorMessage } from '@/lib/api';
 import { area, leaseCount, money, partialTotal, percent, years } from '@/lib/format';
@@ -36,7 +37,11 @@ export default function DeskPage() {
   const r = roll.data;
   return (
     <>
-      <PageHead title={property.data?.name ?? 'Property'} note={r ? `As of ${r.asOf}` : undefined} />
+      <PageHead
+        title={property.data?.name ?? 'Property'}
+        note={r ? `As of ${r.asOf}` : undefined}
+        actions={canEdit && r && r.schedule.totals.leases > 0 ? <DownloadWorkbook id={id} /> : undefined}
+      />
       {failed ? (
         <Panel>
           <ErrorState

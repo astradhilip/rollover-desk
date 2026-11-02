@@ -23,6 +23,8 @@ jobs:
       - run: corepack enable
       - run: pnpm install --frozen-lockfile
       - run: pnpm test:hooks
+      # The workbook test recalculates real formulas, and fails rather than skips without this.
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libreoffice-calc
       - run: pnpm check
       # Token patterns only here: the private term list exists on the developer machine, not in CI.
       - run: pnpm leak-scan --history
