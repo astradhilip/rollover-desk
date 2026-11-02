@@ -1,6 +1,6 @@
 # Demo script
 
-About ten minutes. Start from a freshly seeded database (see the README's "Run it"). Sample files are in `data/synthetic/samples`.
+About ten minutes. Start from a freshly seeded database (see the README's [Quick start](../README.md#quick-start)). Sample files are in `data/synthetic/samples`.
 
 The samples are dated 2026-01-15, and the app uses today's date, so some critical dates already show as passed. That is correct behaviour, not a bug.
 
